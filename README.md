@@ -1,54 +1,37 @@
-# React + TypeScript + Vite
+# TrackBite - Calorie Tracker & Wellness Companion
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+note - will be deployed once completed!
 
-Currently, two official plugins are available:
+**Are you tired of paying for complicated fitness apps that don’t give you everything you need? TrackBite is here to change that. It's simple, effective, and, best of all, free.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Welcome to **TrackBite**, a free and user-friendly calorie tracking app built to help you manage your nutrition and achieve your health goals. Whether you're looking to lose weight, gain muscle, or maintain a balanced diet, TrackBite makes it easy to track your daily calories, macros, and overall progress.
 
-## Expanding the ESLint configuration
+TrackBite isn't just a calorie counter; it’s a comprehensive wellness tool. With features like a personalised meal log, progress tracking, calorie calculator, BMI tracker, and educational articles on nutrition and fitness, TrackBite has everything you need to stay motivated and on track.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Technologies Used
+- React.js
+- TypeScript
+- Clerk
+- MongoDB Atlas
+- CSS
+- Figma
+- Vite
+- Node.js
+- Express.js
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+**API Integration**  
+- Food Tracking
+- Barcode Scanning
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Features [currently implementing them]
+- **User Authentication**
+- **Dashboard**: View your daily calorie intake, macros (protein, carbs, fats, fiber), and progress in one place.
+- **Meal Log**: Log your meals and track your food intake to ensure you stay within your calorie goals.
+- **Progress Tracker**: Keep an eye on your fitness progress, including changes in weight, calories burned, and macros.
+- **Calorie Calculator**: Calculate the number of calories you need to consume to achieve your goals, whether it’s weight loss, muscle gain, or maintenance.
+- **BMI Tracker**: Track your Body Mass Index (BMI) to stay informed on your health status.
+- **Educational Articles**: Learn more about calories, BMI, calorie deficit, and other fitness-related topics through helpful articles.
+- **Barcode Scanning**: Add food items by scanning barcodes for easy nutrition data retrieval.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Contributing
+If you'd like to help out, feel free to fork the repo and submit a pull request. Please ensure your changes align with the code style of the project!
