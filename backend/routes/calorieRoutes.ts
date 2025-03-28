@@ -5,6 +5,7 @@ const router = express.Router();
 
 // Add a new calorie entry
 router.post('/add', async (req, res) => {
+  console.log(req.body); 
   const { name, calories } = req.body;
   const newCalorie = new Calorie({ name, calories });
   await newCalorie.save();

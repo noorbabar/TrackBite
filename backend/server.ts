@@ -2,15 +2,19 @@
 import * as express from 'express';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import * as cors from 'cors';  
 import calorieRoutes from './routes/calorieRoutes';
+import userRoutes from './routes/userRoutes';
 
-dotenv.config(); // Ensure .env is loaded
+
+dotenv.config(); 
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(cors());
 // MongoDB Connection
-const mongoURI = process.env.MONGO_URI; // Use the correct env variable name
+const mongoURI = process.env.MONGO_URI; 
 if (!mongoURI) {
   console.error("Mongo URI is not defined in .env");
 } else {
@@ -29,6 +33,7 @@ app.get('/', (req, res) => {
 
 app.use(express.json());
 app.use('/api/calories', calorieRoutes);
+app.use('/api', userRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

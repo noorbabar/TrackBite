@@ -1,4 +1,3 @@
-// src/components/AddCalorie.tsx
 import React, { useState } from 'react';
 import { addCalorie } from '../services/api';
 
@@ -8,6 +7,7 @@ const AddCalorie: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted with:', { name, calories });
     const newCalorie = await addCalorie(name, calories);
     if (newCalorie) {
       setName('');

@@ -1,31 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';  
 
 const UserProfile = () => {
-  const [user, setUser] = useState<any>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Logging in with:', email, password);
+  };
 
   useEffect(() => {
-    // Fetch user data from your newly created API
     const fetchUserData = async () => {
-      const response = await fetch('/api/user');
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user); // Assuming the user data is returned in the 'user' field
-      } else {
-        console.error('Unauthorized');
+      try {
+        const response = await fetch('/api/user');
+        if (!response.ok) {
+          throw new Error('Unauthorized');
+        }
+      } catch (err) {
+        setError('You are not authorised. Please log in.');
+        navigate('/landing'); 
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate]);
 
-  if (!user) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (
     <div>
-      <h1>Hello, {user.firstName}!</h1>
-      <p>Email: {user.email}</p>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
 };

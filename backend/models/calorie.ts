@@ -1,10 +1,9 @@
-// backend/models/Calorie.ts
+// backend/models/calorie.ts
 import mongoose from 'mongoose';
 
 const calorieSchema = new mongoose.Schema({
-  name: String,
-  calories: Number,
-  date: { type: Date, default: Date.now },
+  name: { type: String, required: true },
+  calories: { type: Number, required: true },
 });
 
 const Calorie = mongoose.model('Calorie', calorieSchema);
