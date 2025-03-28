@@ -4,7 +4,10 @@ import UserProfile from './components/UserProfile';
 import AddCalories from './components/AddCalories';
 import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import SignUpPage from './components/SignUp';
+import SignInPage from './components/SignIn';
+import Progress from './components/Progress';
+import Learn from './components/Learn';
 
 function Header() {
   const navigate = useNavigate(); 
@@ -19,41 +22,39 @@ function Header() {
         <button onClick={() => handleNavigate('/')}>Dashboard</button>
         <button onClick={() => handleNavigate('/add-calories')}>Meal Log</button>
         <button onClick={() => handleNavigate('/progress')}>Progress</button>
-        <button onClick={() => handleNavigate('/settings')}>Settings</button>
+        <button onClick={() => handleNavigate('/learn')}>TrackLearn</button>
       </nav>
     </header>
   );
 }
 
-const GOOGLE_CLIENT_ID = '893157872726-juue9tu2sa5jau375j3b5sgukggk96sp.apps.googleusercontent.com'; 
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('authToken')); 
 
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <Router>
       <div>
-        {/* Header with Buttons */}
         <Header />
-
-        {/* Display welcome message if authenticated */}
         {isAuthenticated ? (
           <h3>Welcome Back</h3>
         ) : (
-          <h3>Log in to your TrackBite Account</h3>
+          <h3></h3>
         )}
 
         {/* Routes */}
         <Routes>
           <Route path="/" element={isAuthenticated ? <Dashboard /> : <Landing />} /> {/* Route for Dashboard */}
           <Route path="/add-calories" element={isAuthenticated ? <AddCalories /> : <Landing />} />
+          <Route path="/progress" element={isAuthenticated ? <Progress /> : <Landing />} />
           <Route path="/user-profile" element={isAuthenticated ? <UserProfile /> : <Landing />} />
-          <Route path="/landing" element={<Landing />} /> {/* Route for login/landing page */}
+          <Route path="/learn" element={isAuthenticated ? <Learn /> : <Learn />} />
+          <Route path="/landing" element={<Landing />} /> 
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
         </Routes>
       </div>
     </Router>
-    </GoogleOAuthProvider>
   );
 }
 

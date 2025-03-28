@@ -6,7 +6,6 @@ import * as cors from 'cors';
 import calorieRoutes from './routes/calorieRoutes';
 import userRoutes from './routes/userRoutes';
 
-
 dotenv.config(); 
 
 const app = express();

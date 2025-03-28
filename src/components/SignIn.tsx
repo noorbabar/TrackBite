@@ -1,14 +1,9 @@
-import { SignIn } from '@clerk/nextjs'
+import { SignIn } from "@clerk/clerk-react";
 
-export default function Page() {
+export default function SignInPage() {
   return (
-    <div>
-      <h2>Welcome to TrackBite</h2>
-      <p>Please sign in to continue.</p>
-            <SignIn />
-            <div>
-        <p>Don't have an account? <a href="/sign-in">Sign Up</a></p>
-      </div>
+    <div className="flex items-center justify-center min-h-screen">
+      <SignIn />
     </div>
   );
 }
