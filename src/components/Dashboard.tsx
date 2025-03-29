@@ -1,23 +1,58 @@
-// src/pages/Dashboard.tsx
+import { useState, useEffect } from 'react';
+import ProfileSetupModal from './ProfileSetup';
+import '../App.css'; 
 
 const Dashboard = () => {
-  // Soo this is sample data - will leave it like this for now
-  const dailySummary = {
-    calories: 2000,
-    protein: 150,
-    carbs: 250,
-    fats: 70,
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileSet, setProfileSet] = useState<boolean>(false); 
+
+  useEffect(() => {
+    const profileData = localStorage.getItem('profileData');
+    if (profileData) {
+      setProfileSet(true);  
+    }
+  }, []);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setProfileSet(true); 
   };
 
   return (
-    <div>
-      <h2>Today's Summary</h2>
-      <div>
-        <p><strong>Calories:</strong> {dailySummary.calories} kcal</p>
-        <p><strong>Protein:</strong> {dailySummary.protein} g</p>
-        <p><strong>Carbs:</strong> {dailySummary.carbs} g</p>
-        <p><strong>Fats:</strong> {dailySummary.fats} g</p>
+    <div className="dashboard">
+      <h2>Welcome to your Dashboard</h2>
+
+      <p>
+        We’re thrilled to have you on TrackBite! By setting up your profile, you're taking the first step toward a healthier, more empowered you. This personalized setup will help you stay on track with research-backed recommendations that support your wellness goals. If you have any questions along the way, TrackLearn is here to guide you. Let's get started and make your wellness journey a success!
+      </p>
+
+      <button onClick={openModal} className="set-up-profile">Set Up Your Profile</button>
+
+      {profileSet && (
+        <div className="card">
+          <h3>Wellness Tips</h3>
+          <ul>
+            <li>Drink plenty of water throughout the day!</li>
+            <li>Try to get at least 7-8 hours of sleep each night.</li>
+            <li>Incorporate more vegetables into your meals for better health.</li>
+          </ul>
+        </div>
+      )}
+
+      <div className="card">
+        <h3>Explore More</h3>
+        <button onClick={() => window.location.href = '/meal-log'} className="log-meal">Log Your Meals</button>
+        <button onClick={() => window.location.href = '/progress'} className="track-progress">Track Your Progress</button>
+        <button onClick={() => window.location.href = '/tracklearn'} className="track-learn">Visit TrackLearn</button>
       </div>
+
+      <p>Remember: Small changes lead to big results over time!</p>
+
+      {isModalOpen && <ProfileSetupModal closeModal={closeModal} />}
     </div>
   );
 };

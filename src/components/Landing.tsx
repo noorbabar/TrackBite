@@ -1,4 +1,3 @@
-import React from "react";
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import "../App.css";
 

@@ -1,11 +1,11 @@
 import { useAuth } from '@clerk/clerk-react';
 
 export const Logout = () => {
-  const { signOut } = useAuth();  // Get the signOut function from Clerk's useAuth hook
+  const { signOut } = useAuth();  
 
   const handleSignOut = () => {
-    signOut();  // Trigger sign-out action
+    signOut();  
   };
 
-  return <button onClick={handleSignOut}>Log Out</button>;
+  return <button className="logout-button" onClick={handleSignOut}>Log Out</button>;
 };

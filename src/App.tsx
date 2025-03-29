@@ -11,6 +11,7 @@ import Progress from './components/Progress';
 import Learn from './components/Learn';
 import { Logout } from './components/Logout'; 
 
+
 function Header() {
   const navigate = useNavigate();
   const auth = useAuth(); 
@@ -43,7 +44,7 @@ function App() {
         <Header />
         {/* Display Welcome Message if user is authenticated */}
         {isAuthenticated ? (
-          <h3>Welcome Back!</h3>
+          <h3></h3>
         ) : (
           <h3>Please Sign In</h3>
         )}

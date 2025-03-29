@@ -1,23 +1,66 @@
 /* =======================
-   Intro Section Styles
+   Global Styles
    ======================= */
-   .intro-box {
+   body {
+    padding: 0 40px; 
+    background-color: #f8ede7;
+    color: #000000;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.3s ease;
+    scroll-behavior: smooth;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  h1, h2, h3 {
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold; 
+    color: #333; 
+    position: relative;  
+  }
+  
+  
+  
+  h1:hover, h2:hover, h3:hover {
+    color: #020202; 
+    transform: translateY(-10px) scale(1.1); 
+    text-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(0, 0, 0, 0.1);  /* Enhanced shadow on hover */
+  }
+  
+  h1, h2, h3 {
+    animation: float 3s ease-in-out infinite;
+  }
+    
+  
+  /* =======================
+     Intro Section Styles
+     ======================= */
+  .intro-box {
     text-align: center;
     margin-bottom: 30px;
   }
   
   .intro-box h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #333;
     margin-bottom: 15px;
+    font-weight: bold; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
   
   .intro-box p {
     font-size: 1.2rem;
     color: #555;
-    max-width: 600px;
+    max-width: 700px; 
     margin: 0 auto;
-    line-height: 1.5;
+    line-height: 1.6;
+    text-align: center;
   }
   
   /* =======================
@@ -29,8 +72,8 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f4f4f4;
-    padding-top: 60px; 
+    background-color: #f4f4f4; 
+    padding-top: 60px;
     position: absolute;
     width: 100%;
     top: 50%;
@@ -38,60 +81,36 @@
     transform: translate(-50%, -50%);
   }
   
-  /* login box */
   .login-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 350px;
+    width: 380px;
     background: white;
-    padding: 25px;
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: all 0.4s ease-in-out;
   }
   
-  /* Title */
+  .login-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  
   h2 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
   }
   
   p {
     font-size: 1.1rem;
     color: #555;
-  }
-  
-  /* Auth Buttons */
-  .auth-button {
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    background: linear-gradient(135deg, #edecea, #f7e1c2);
-    color: rgb(20, 20, 20);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .auth-button:hover {
-    background: linear-gradient(135deg, #f3e2c6, #f4d6a3);
-    transform: translateY(-2px);
-    box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .sign-up-container {
-    margin-top: 10px;
-  }
-  
-  .login-box div p {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #777;
+    margin-bottom: 15px;
   }
   
   /* =======================
@@ -99,7 +118,7 @@
      ======================= */
   header {
     width: 100%;
-    background-color: #f6efec;
+    background-color: #eee2dfd0; 
     padding: 15px;
     position: fixed;
     top: 0;
@@ -121,7 +140,7 @@
     padding: 12px 20px;
     font-size: 1rem;
     font-weight: bold;
-    background: linear-gradient(135deg, #edecea, #f7e1c2);
+    background: linear-gradient(135deg, #f4eae2, #f7e2d0); 
     color: rgb(20, 20, 20);
     border: none;
     border-radius: 8px;
@@ -132,9 +151,15 @@
   
   form button:hover,
   nav button:hover {
-    background: linear-gradient(135deg, #f3e2c6, #f4d6a3);
+    background: linear-gradient(135deg, #f3e2c6, #f4d3c1);
     transform: translateY(-2px);
     box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  form button:focus,
+  nav button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
   }
   
   /* =======================
@@ -146,107 +171,296 @@
     width: 100%;
     text-align: center;
     color: #7f8c8d;
+    font-size: 1rem;
+    padding: 10px;
+    transition: all 0.3s ease;
   }
   
-    /* =======================
+  footer:hover {
+    transform: translateY(-3px);
+    color: #2d2d2d;
+    font-weight: bold;
+  }
+  
+  /* =======================
      Learn Page
      ======================= */
-  /* Learn Page Styles */
-.learn-page {
-  padding: 40px;
-  background-color: #f4f6f9;  /* Light background with a subtle hint of blue */
-  font-family: 'Roboto', sans-serif;
-  color: #333;  /* Dark text color for better readability */
-  max-width: 1200px;
-  margin: 0 auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);  /* Soft shadow to give depth */
-}
-
-.learn-page h1 {
-  font-size: 2.8rem;
-  color: #2d2d2d;
-  text-align: center;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-.learn-page p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #666;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.learn-section {
-  margin-bottom: 30px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);  /* Subtle card-like shadow */
-}
-
-.learn-section h2 {
-  font-size: 2rem;
-  color: #1d1d1d;
-  font-weight: 600;
-  margin-bottom: 15px;
-  text-transform: capitalize;
-  border-bottom: 2px solid #e3e3e3;  /* Underline effect */
-  padding-bottom: 10px;
-}
-
-.learn-section p {
-  font-size: 1.1rem;
-  color: #777;
-  line-height: 1.8;
-  margin-bottom: 20px;
-}
-
-.learn-more-button {
-  display: block;
-  width: 100%;
-  padding: 15px;
-  font-size: 1.2rem;
-  background-color: #f7a240;  /* Orange color for a call-to-action */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 30px;
-}
-
-.learn-more-button:hover {
-  background-color: #d88c2f;  /* Darker orange on hover */
-  transform: translateY(-2px);  /* Subtle lift effect */
-}
-
-.learn-more-button:active {
-  transform: translateY(1px);  /* Slight indentation on click */
-}
-
-/* Responsive Design: Adjust layout for smaller screens */
-@media (max-width: 768px) {
   .learn-page {
-    padding: 20px;
+    padding: 40px;
+    background-color: #f4f6f9;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
   }
-
+  
+  .learn-page:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  
   .learn-page h1 {
-    font-size: 2rem;
+    font-size: 3rem;
+    color: #2d2d2d;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
   }
-
+  
+  .learn-page p {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
   .learn-section {
-    padding: 15px;
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
   }
-
+  
   .learn-section h2 {
-    font-size: 1.6rem;
+    font-size: 2.2rem;
+    color: #1d1d1d;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+    border-bottom: 2px solid #e3e3e3;
+    padding-bottom: 10px;
+    text-align: center;
   }
-
+  
+  .learn-section p {
+    font-size: 1.2rem;
+    color: #777;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  
   .learn-more-button {
-    font-size: 1.1rem;
-    padding: 12px;
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.3rem;
+    background-color: #f7a240;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 30px;
   }
-}
+  
+  .learn-more-button:hover {
+    transform: translateY(-2px);
+    background-color: #e08b30;
+  }
+  
+  .learn-more-button:active {
+    transform: translateY(1px);
+  }
+  
+  /* =======================
+     Dashboard Styles
+     ======================= */
+  .dashboard {
+    display: flex;
+    flex-direction: column;  
+    justify-content: space-between;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .dashboard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard .card {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; 
+    transition: all 0.3s ease;
+    margin-bottom: 40px; 
+  }
+  
+  .dashboard .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard .card h3 {
+    font-size: 1.8rem;
+    color: #2d2d2d;
+    font-weight: bold;
+  }
+  
+  .dashboard .card p {
+    font-size: 1.2rem;
+    color: #777;
+    margin-top: 10px;
+  }
+  
+  /* =======================
+     Calorie Intake Modal Form
+     ======================= */
+  .modal-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    overflow: auto;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin-top: 50px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .warning {
+    color: #ff6347;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  form {
+    display: grid;
+    gap: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  input[type="number"],
+  select {
+    padding: 10px;
+    font-size: 15px;
+    color: #1d1d1d;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 100%;
+  }
+  
+  input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  button:hover {
+    background-color: #333;
+  }
+  
+  /* Logout Button Style */
+  .logout-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+  
+  .logout-button:hover {
+    background-color: #000000; 
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .learn-page {
+      padding: 20px;
+    }
+  
+    .learn-page h1 {
+      font-size: 2.2rem;
+    }
+  
+    .learn-section {
+      padding: 20px;
+    }
+  
+    .learn-section h2 {
+      font-size: 1.8rem;
+    }
+  
+    .learn-more-button {
+      font-size: 1.1rem;
+      padding: 12px;
+    }
+  
+    .dashboard {
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    .dashboard .card {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 20px;
+      margin-top: 10px;
+      max-width: 90%;
+    }
+  
+    .form-group label {
+      font-size: 12px;
+    }
+  
+    input[type="number"],
+    select {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    button {
+      font-size: 14px;
+      padding: 10px 15px;
+    }
+  }
+  
