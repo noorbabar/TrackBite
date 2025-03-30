@@ -118,8 +118,8 @@
      ======================= */
   header {
     width: 100%;
-    background-color: #eee2dfd0; 
-    padding: 15px;
+    background-color: #ffffff; 
+    padding: 1px;
     position: fixed;
     top: 0;
     left: 0;
@@ -289,7 +289,7 @@
   
   .dashboard .card {
     background-color: #f4f4f4;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%; 
@@ -314,6 +314,21 @@
     margin-top: 10px;
   }
   
+  .dash-button {
+    padding: 12px 20px;
+    width: 200px;
+    font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #f4eae2, #f7e2d0); 
+    color: rgb(20, 20, 20);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-right: 10px; 
+    margin-left: 10px;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+  }
   /* =======================
      Calorie Intake Modal Form
      ======================= */
@@ -462,5 +477,9 @@
       font-size: 14px;
       padding: 10px 15px;
     }
+  }
+  img {
+    max-width: 140px; 
+    height: 75px;
   }
   

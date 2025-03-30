@@ -23,14 +23,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard">
+      <div className="card">
       <h2>Welcome to your Dashboard</h2>
 
       <p>
         We’re thrilled to have you on TrackBite! By setting up your profile, you're taking the first step toward a healthier, more empowered you. This personalized setup will help you stay on track with research-backed recommendations that support your wellness goals. If you have any questions along the way, TrackLearn is here to guide you. Let's get started and make your wellness journey a success!
       </p>
 
-      <button onClick={openModal} className="set-up-profile">Set Up Your Profile</button>
+      <button onClick={openModal} className="dash-button">Set Up Your Profile</button>
 
       {profileSet && (
         <div className="card">
@@ -45,9 +45,9 @@ const Dashboard = () => {
 
       <div className="card">
         <h3>Explore More</h3>
-        <button onClick={() => window.location.href = '/meal-log'} className="log-meal">Log Your Meals</button>
-        <button onClick={() => window.location.href = '/progress'} className="track-progress">Track Your Progress</button>
-        <button onClick={() => window.location.href = '/tracklearn'} className="track-learn">Visit TrackLearn</button>
+        <button onClick={() => window.location.href = '/add-calories'} className="dash-button">Log Your Meals</button>
+        <button onClick={() => window.location.href = '/progress'} className="dash-button">Track Your Progress</button>
+        <button onClick={() => window.location.href = '/learn'} className="dash-button">Visit TrackLearn</button>
       </div>
 
       <p>Remember: Small changes lead to big results over time!</p>
