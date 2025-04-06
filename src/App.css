@@ -1,483 +1,678 @@
-/* =======================
-   Global Styles
-   ======================= */
-   body {
-    padding: 0 40px; 
-    background-color: #f8ede7;
-    color: #000000;
-    font-family: 'Roboto', sans-serif;
-    transition: all 0.3s ease;
-    scroll-behavior: smooth;
+
+  /* General Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fb;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+/* Macro visualization styles */
+
+
+
+.calories-display {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.calories-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #0066cc;
+  padding: 15px;
+}
+
+.calories-number {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0066cc;
+}
+
+.calories-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.macros-breakdown {
+  margin-top: 16px;
+}
+
+.macro-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.macro-segment {
+  height: 100%;
+}
+
+.protein-segment {
+  background-color: #ff6b6b;
+}
+
+.carbs-segment {
+  background-color: #4ecdc4;
+}
+
+.fat-segment {
+  background-color: #ffd166;
+}
+
+.macro-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.macro-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.macro-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.protein-color {
+  background-color: #ff6b6b;
+}
+
+.carbs-color {
+  background-color: #4ecdc4;
+}
+
+.fat-color {
+  background-color: #ffd166;
+}
+
+.macro-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.macro-value {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.macro-name {
+  font-size: 12px;
+  color: #666;
+}
+
+.macro-percent {
+  font-size: 12px;
+  color: #999;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Dashboard Card */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+h2, h3 {
+  color: #222;
+}
+
+/* Dashboard Button */
+.dash-button {
+  background: #ff5a5f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dash-button:hover {
+  background: #e0484c;
+}
+
+/* Navigation */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 16px 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  margin: 0 12px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  color: #ff5a5f;
+}
+
+/* Meal Tracking */
+.meal-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.meal-item {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 30%;
+}
+
+.meal-item h4 {
+  margin-bottom: 8px;
+}
+
+.calories {
+  color: #ff5a5f;
+  font-weight: bold;
+}
+
+/* Weekly Progress */
+.weekly-progress {
+  text-align: right;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Learn Page */
+.learn-page {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.learn-section {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 16px;
+}
+
+.learn-more-button {
+  background: #ff5a5f;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.learn-more-button:hover {
+  background: #e0484c;
+}
+
+/* food-tracker-styles.css */
+
+/* Base styles */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* Container styles */
+.tracker-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: #fcf6f6;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+.tracker-header {
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #c6d7f8;
+}
+
+.tracker-header h1 {
+  font-size: 1.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #a6bef0;
+  margin: 0;
+}
+
+/* Date selector styles */
+.date-selector {
+  margin-bottom: 1.5rem;
+}
+
+.date-selector label {
+  display: flex;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.date-selector input {
+  padding: 0.5rem;
+  border: 4px solid #a7c8de;
+  border-radius: 0.25rem;
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* Summary card styles */
+.summary-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e6f5fe 100%);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1e40af;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  text-align: center;
+}
+
+.stat-box {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-2px);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #4b5563;
+}
+
+.calories-box {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.protein-box {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.carbs-box {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.fat-box {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+/* Search section styles */
+.search-section {
+  margin-bottom: 1.5rem;
+}
+
+.search-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 0.625rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.3);
+}
+
+.scan-button {
+  background-color: #8da9f0d7;
+  color: white;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.scan-button:hover {
+  background-color: #79aded;
+}
+
+.add-custom-button {
+  background-color: #93abe8ac;
+  color: white;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-custom-button:hover {
+  background-color: #79aded;
+}
+
+/* Search results styles */
+.search-results {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-result-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: #f3f4f6;
+}
+
+.food-name {
+  font-weight: 500;
+}
+
+.food-calories {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.food-serving {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+
+/* Food log styles */
+.food-log-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
+}
+
+.meal-section {
+  margin-bottom: 1.5rem;
+}
+
+.meal-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.meal-items {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.meal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.meal-item:last-child {
+  border-bottom: none;
+}
+
+.meal-item-details {
+  flex-grow: 1;
+}
+
+.meal-item-name {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.meal-item-macros {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.meal-item-calories {
+  font-weight: 500;
+  color: #4b5563;
+  margin-right: 1rem;
+}
+
+.delete-button {
+  color: #ef4444;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.delete-button:hover {
+  color: #b91c1c;
+}
+
+.no-foods-message {
+  font-style: italic;
+  color: #9ca3af;
+  padding: 1rem 0;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 28rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.food-info {
+  margin-bottom: 1.5rem;
+}
+
+.food-info p {
+  margin-bottom: 0.5rem;
+}
+
+.food-info .label {
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #2479f1;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.3);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.cancel-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background-color: rgb(85, 112, 159);
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #acbce0;
+}
+
+.add-button {
+  padding: 0.5rem 1rem;
+  background-color: #709feb;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-button:hover {
+  background-color: #acbce0;
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+  .summary-stats {
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  a {
-    text-decoration: none;
-    color: inherit;
+  .form-row {
+    grid-template-columns: 1fr;
   }
   
-  h1, h2, h3 {
-    transition: all 0.3s ease;
-    text-align: center;
-    font-family: 'Arial', sans-serif;
-    font-weight: bold; 
-    color: #333; 
-    position: relative;  
+  .form-row-2 {
+    grid-template-columns: 1fr;
   }
   
-  
-  
-  h1:hover, h2:hover, h3:hover {
-    color: #020202; 
-    transform: translateY(-10px) scale(1.1); 
-    text-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(0, 0, 0, 0.1);  /* Enhanced shadow on hover */
-  }
-  
-  h1, h2, h3 {
-    animation: float 3s ease-in-out infinite;
-  }
-    
-  
-  /* =======================
-     Intro Section Styles
-     ======================= */
-  .intro-box {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .intro-box h1 {
-    font-size: 2.8rem;
-    color: #333;
-    margin-bottom: 15px;
-    font-weight: bold; 
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-  
-  .intro-box p {
-    font-size: 1.2rem;
-    color: #555;
-    max-width: 700px; 
-    margin: 0 auto;
-    line-height: 1.6;
-    text-align: center;
-  }
-  
-  /* =======================
-     Landing Page Styles (for login box)
-     ======================= */
-  .landing-container {
-    display: flex;
+  .search-container {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f4f4f4; 
-    padding-top: 60px;
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
   
-  .login-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 380px;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: all 0.4s ease-in-out;
-  }
-  
-  .login-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
-  }
-  
-  h2 {
-    font-size: 2.2rem;
-    color: #333;
-    margin-bottom: 15px;
-    font-weight: bold;
-  }
-  
-  p {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 15px;
-  }
-  
-  /* =======================
-     Header & Navigation Styles
-     ======================= */
-  header {
-    width: 100%;
-    background-color: #ffffff; 
-    padding: 1px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  nav {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  form button,
-  nav button {
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    background: linear-gradient(135deg, #f4eae2, #f7e2d0); 
-    color: rgb(20, 20, 20);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  form button:hover,
-  nav button:hover {
-    background: linear-gradient(135deg, #f3e2c6, #f4d3c1);
-    transform: translateY(-2px);
-    box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  form button:focus,
-  nav button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* =======================
-     Footer Styles
-     ======================= */
-  footer {
-    position: absolute;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    color: #7f8c8d;
-    font-size: 1rem;
-    padding: 10px;
-    transition: all 0.3s ease;
-  }
-  
-  footer:hover {
-    transform: translateY(-3px);
-    color: #2d2d2d;
-    font-weight: bold;
-  }
-  
-  /* =======================
-     Learn Page
-     ======================= */
-  .learn-page {
-    padding: 40px;
-    background-color: #f4f6f9;
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    max-width: 1200px;
-    margin: 0 auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .learn-page:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  }
-  
-  .learn-page h1 {
-    font-size: 3rem;
-    color: #2d2d2d;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-  
-  .learn-page p {
-    font-size: 1.3rem;
-    line-height: 1.6;
-    color: #666;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .learn-section {
-    margin-bottom: 30px;
-    padding: 25px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .learn-section h2 {
-    font-size: 2.2rem;
-    color: #1d1d1d;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-transform: capitalize;
-    border-bottom: 2px solid #e3e3e3;
-    padding-bottom: 10px;
-    text-align: center;
-  }
-  
-  .learn-section p {
-    font-size: 1.2rem;
-    color: #777;
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-  
-  .learn-more-button {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    font-size: 1.3rem;
-    background-color: #f7a240;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 30px;
-  }
-  
-  .learn-more-button:hover {
-    transform: translateY(-2px);
-    background-color: #e08b30;
-  }
-  
-  .learn-more-button:active {
-    transform: translateY(1px);
-  }
-  
-  /* =======================
-     Dashboard Styles
-     ======================= */
-  .dashboard {
-    display: flex;
-    flex-direction: column;  
-    justify-content: space-between;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 40px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .dashboard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  }
-  
-  .dashboard .card {
-    background-color: #f4f4f4;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%; 
-    transition: all 0.3s ease;
-    margin-bottom: 40px; 
-  }
-  
-  .dashboard .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .dashboard .card h3 {
-    font-size: 1.8rem;
-    color: #2d2d2d;
-    font-weight: bold;
-  }
-  
-  .dashboard .card p {
-    font-size: 1.2rem;
-    color: #777;
-    margin-top: 10px;
-  }
-  
-  .dash-button {
-    padding: 12px 20px;
-    width: 200px;
-    font-size: 1rem;
-    font-weight: bold;
-    background: linear-gradient(135deg, #f4eae2, #f7e2d0); 
-    color: rgb(20, 20, 20);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin-right: 10px; 
-    margin-left: 10px;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  /* =======================
-     Calorie Intake Modal Form
-     ======================= */
-  .modal-overlay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    overflow: auto;
-  }
-  
-  .modal-content {
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-    margin-top: 50px;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  
-  .warning {
-    color: #ff6347;
-    font-weight: bold;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
-  form {
-    display: grid;
-    gap: 15px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 5px;
-  }
-  
-  input[type="number"],
-  select {
-    padding: 10px;
-    font-size: 15px;
-    color: #1d1d1d;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+  .scan-button, 
+  .add-custom-button {
     width: 100%;
   }
+
   
-  input[type="radio"] {
-    margin-right: 10px;
-  }
-  
-  .row {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
-  
-  button:hover {
-    background-color: #333;
-  }
-  
-  /* Logout Button Style */
-  .logout-button {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 20px;
-  }
-  
-  .logout-button:hover {
-    background-color: #000000; 
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .learn-page {
-      padding: 20px;
-    }
-  
-    .learn-page h1 {
-      font-size: 2.2rem;
-    }
-  
-    .learn-section {
-      padding: 20px;
-    }
-  
-    .learn-section h2 {
-      font-size: 1.8rem;
-    }
-  
-    .learn-more-button {
-      font-size: 1.1rem;
-      padding: 12px;
-    }
-  
-    .dashboard {
-      flex-direction: column;
-      gap: 20px;
-    }
-  
-    .dashboard .card {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .modal-content {
-      padding: 20px;
-      margin-top: 10px;
-      max-width: 90%;
-    }
-  
-    .form-group label {
-      font-size: 12px;
-    }
-  
-    input[type="number"],
-    select {
-      font-size: 14px;
-      padding: 8px;
-    }
-  
-    button {
-      font-size: 14px;
-      padding: 10px 15px;
-    }
-  }
+}
   img {
     max-width: 140px; 
     height: 75px;

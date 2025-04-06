@@ -1,21 +1,70 @@
-import  { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 
-const ProfileSetup = ({ closeModal }: { closeModal: () => void }) => {
+// Define a type for user stats
+type UserStats = {
+  weight: number | null;
+  goalWeight: number | null;
+  age: number | null;
+  height: number | null;
+  activityLevel:'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active';
+  gender: 'male' | 'female';
+  recommendedCalories: number | null;
+  estimatedDuration: number | null;
+  goalCategory: 'maintenance' | 'loss' | 'gain';
+  goalRate: 'mild' | 'moderate' | 'extreme';
+  lastUpdated: Date | null;
+};
 
-    const [weight, setWeight] = useState<number | ''>('');
+// Props type with onSaveStats function
+type ProfileSetupProps = {
+  closeModal: () => void;
+  onSaveStats?: (stats: UserStats) => void; 
+  initialStats?: UserStats; 
+};
+
+const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupProps) => {
+  const [weight, setWeight] = useState<number | ''>('');
   const [goalWeight, setGoalWeight] = useState<number | ''>('');
   const [height, setHeight] = useState<number | ''>('');
   const [age, setAge] = useState<number | ''>('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [activityLevel, setActivityLevel] = useState<'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active'>('Sedentary');
-  const [goal, setGoal] = useState<'maintenance' | 'loss' | 'gain'>('maintenance');
-  const [cutType, setCutType] = useState<'moderate' | 'aggressive'>('moderate');
-  const [calories, setCalories] = useState<number | null>(null);
+  
+  // Goal selection state variables
+  const [goalCategory, setGoalCategory] = useState<'maintenance' | 'loss' | 'gain'>('maintenance');
+  const [goalRate, setGoalRate] = useState<'mild' | 'moderate' | 'extreme'>('moderate');
+  
+  const [calories, setCalories] = useState<{ [key: string]: number }>({});
+  const [selectedCalories, setSelectedCalories] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
-  const [waterRecommendation, setWaterRecommendation] = useState<string>('');
-  const [sleepRecommendation, setSleepRecommendation] = useState<string>('');
   const [caloriesTooLowWarning, setCaloriesTooLowWarning] = useState<string>('');
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  
+  // New state for user stats
+  const [userStats, setUserStats] = useState<UserStats>({
+    weight: null,
+    goalWeight: null,
+    age: null,
+    height: null,
+    activityLevel: 'Sedentary',
+    gender: 'male',
+    recommendedCalories: null,
+    estimatedDuration: null,
+    goalCategory: 'maintenance',
+    goalRate: 'moderate',
+    lastUpdated: null
+  });
+
+  // Load initial stats if provided
+  useEffect(() => {
+    if (initialStats) {
+      setUserStats(initialStats);
+      setGoalCategory(initialStats.goalCategory);
+      setGoalRate(initialStats.goalRate);
+      if (initialStats.recommendedCalories) setSelectedCalories(initialStats.recommendedCalories);
+      if (initialStats.estimatedDuration) setDuration(initialStats.estimatedDuration);
+    }
+  }, [initialStats]);
 
   const calculateCalories = () => {
     if (weight === '' || goalWeight === '' || height === '' || age === '') return;
@@ -23,13 +72,12 @@ const ProfileSetup = ({ closeModal }: { closeModal: () => void }) => {
     const weightInKg = weight;
     const heightInCm = height;
     const ageInYears = age;
-    const goalWeightKg = goalWeight;
 
     let bmr = gender === 'male'
       ? 10 * weightInKg + 6.25 * heightInCm - 5 * ageInYears + 5
       : 10 * weightInKg + 6.25 * heightInCm - 5 * ageInYears - 161;
 
-    const activityMultipliers: Record<'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active', number> = {
+    const activityMultipliers = {
       Sedentary: 1.2,
       'Lightly Active': 1.375,
       'Moderately Active': 1.55,
@@ -37,39 +85,116 @@ const ProfileSetup = ({ closeModal }: { closeModal: () => void }) => {
     };
 
     const tdee = bmr * activityMultipliers[activityLevel];
-    let adjustedCalories = tdee;
-    let weeks = null;
+    
+    // Calculate all calorie options
+    const calorieOptions: { [key: string]: number } = {
+      maintenance: tdee,
+      mildLoss: tdee - 250,
+      moderateLoss: tdee - 500,
+      extremeLoss: Math.max(tdee - 1000, 800),
+      mildGain: tdee + 250,
+      moderateGain: tdee + 500,
+      extremeGain: tdee + 1000,
+    };
+    
+    setCalories(calorieOptions);
+    
+    let calculatedCalories = null;
+    let calculatedDuration = null;
+    
+    // Set the selected calories based on user's goal choices
+    if (goalCategory === 'maintenance') {
+      calculatedCalories = calorieOptions.maintenance;
+    } else if (goalCategory === 'loss') {
+      if (goalRate === 'mild') {
+        calculatedCalories = calorieOptions.mildLoss;
+      } else if (goalRate === 'moderate') {
+        calculatedCalories = calorieOptions.moderateLoss;
+      } else {
+        calculatedCalories = calorieOptions.extremeLoss;
+      }
+      
+      // Calculate duration for weight loss
+      const totalLoss = weightInKg - goalWeight;
+      const deficitPerDay = goalRate === 'mild' ? 250 : goalRate === 'moderate' ? 500 : 1000;
+      calculatedDuration = Math.ceil((totalLoss * 7700) / (deficitPerDay * 7));
+      
+    } else if (goalCategory === 'gain') {
+      if (goalRate === 'mild') {
+        calculatedCalories = calorieOptions.mildGain;
+      } else if (goalRate === 'moderate') {
+        calculatedCalories = calorieOptions.moderateGain;
+      } else {
+        calculatedCalories = calorieOptions.extremeGain;
+      }
+      
+      // Calculate duration for weight gain
+      const totalGain = goalWeight - weightInKg;
+      const surplusPerDay = goalRate === 'mild' ? 250 : goalRate === 'moderate' ? 500 : 1000;
+      calculatedDuration = Math.ceil((totalGain * 7700) / (surplusPerDay * 7));
+    }
+    
+    setSelectedCalories(calculatedCalories);
+    setDuration(calculatedDuration);
 
-    // Calorie adjustment for weight loss or gain
-    if (goal === 'loss') {
-      const totalLoss = weightInKg - goalWeightKg;
-      const deficitPerWeek = cutType === 'aggressive' ? 1000 * 7 : 500 * 7;
-      weeks = Math.ceil((totalLoss * 7700) / deficitPerWeek);
-      adjustedCalories -= cutType === 'aggressive' ? 1000 : 500;
-    } else if (goal === 'gain') {
-      adjustedCalories += 500;
+    // Save to user stats
+    const updatedStats: UserStats = {
+      weight,
+      goalWeight,
+      age,
+      height,
+      activityLevel,
+      gender,
+      recommendedCalories: calculatedCalories,
+      estimatedDuration: calculatedDuration,
+      goalCategory,
+      goalRate,
+      lastUpdated: new Date()
+    };
+    
+    setUserStats(updatedStats);
+    
+    // If onSaveStats prop exists, call it with the updated stats
+    if (onSaveStats) {
+      onSaveStats(updatedStats);
     }
 
     // Check if calories are too low
-    if (adjustedCalories < (gender === 'male' ? 1500 : 1200)) {
-      setCaloriesTooLowWarning('Warning: The suggested calorie intake is too low. Please consult a healthcare provider for a safe approach.');
+    if (goalCategory === 'loss' && goalRate === 'extreme' && 
+        ((gender === 'female' && calorieOptions.extremeLoss < 1200) || 
+         (gender === 'male' && calorieOptions.extremeLoss < 1500))) {
+      setCaloriesTooLowWarning('Warning: Extreme deficit is too low for long-term health.');
     } else {
       setCaloriesTooLowWarning('');
     }
-
-    // Calculate water and sleep recommendations
-    const waterAmount = Math.min(3.5, weightInKg * 0.033); 
-    setWaterRecommendation(`For optimal hydration, aim for a minimum of ${waterAmount.toFixed(1)}L of water per day.`);
-    setSleepRecommendation('Aim for 8+ hours of sleep for optimal recovery and health.');
-
-    setCalories(adjustedCalories);
-    setDuration(weeks);
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     calculateCalories();
     setIsFormSubmitted(true);
+  };
+
+  // Get the rate label based on goal rate
+  const getRateLabel = (rate: string, category: string) => {
+    if (category === 'loss') {
+      if (rate === 'mild') return '0.25 kg/week';
+      if (rate === 'moderate') return '0.5 kg/week';
+      return '1 kg/week';
+    } else if (category === 'gain') {
+      if (rate === 'mild') return '0.25 kg/week';
+      if (rate === 'moderate') return '0.5 kg/week';
+      return '1 kg/week';
+    }
+    return '';
+  };
+
+  // Function to save stats and close modal
+  const handleSaveAndClose = () => {
+    if (onSaveStats && userStats.recommendedCalories) {
+      onSaveStats(userStats);
+    }
+    closeModal();
   };
 
   return (
@@ -83,71 +208,96 @@ const ProfileSetup = ({ closeModal }: { closeModal: () => void }) => {
                 <label>Current Weight (kg):</label>
                 <input type="number" value={weight} onChange={(e) => setWeight(Number(e.target.value) || '')} required />
               </div>
-
               <div className="form-group">
                 <label>Goal Weight (kg):</label>
                 <input type="number" value={goalWeight} onChange={(e) => setGoalWeight(Number(e.target.value) || '')} required />
               </div>
-
               <div className="form-group">
                 <label>Height (cm):</label>
                 <input type="number" value={height} onChange={(e) => setHeight(Number(e.target.value) || '')} required />
               </div>
-
               <div className="form-group">
                 <label>Age:</label>
                 <input type="number" value={age} onChange={(e) => setAge(Number(e.target.value) || '')} required />
               </div>
-
-              <div className="form-group row">
+              <div className="form-group">
                 <label>Gender:</label>
-                <div>
-                  <label><input type="radio" value="male" checked={gender === 'male'} onChange={() => setGender('male')} /> Male</label>
-                  <label><input type="radio" value="female" checked={gender === 'female'} onChange={() => setGender('female')} /> Female</label>
-                </div>
+                <select value={gender} onChange={(e) => setGender(e.target.value as 'male' | 'female')}>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
               </div>
-
               <div className="form-group">
                 <label>Activity Level:</label>
-                <select value={activityLevel} onChange={(e) => setActivityLevel(e.target.value as 'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active')}>
+                <select value={activityLevel} onChange={(e) => setActivityLevel(e.target.value as any)}>
                   <option value="Sedentary">Sedentary</option>
                   <option value="Lightly Active">Lightly Active</option>
                   <option value="Moderately Active">Moderately Active</option>
                   <option value="Very Active">Very Active</option>
                 </select>
               </div>
-
+              
+              {/* Goal selection section */}
               <div className="form-group">
                 <label>Goal:</label>
-                <select value={goal} onChange={(e) => setGoal(e.target.value as 'maintenance' | 'loss' | 'gain')}>
-                  <option value="maintenance">Maintain Weight</option>
+                <select value={goalCategory} onChange={(e) => setGoalCategory(e.target.value as 'maintenance' | 'loss' | 'gain')}>
+                  <option value="maintenance">Maintenance</option>
                   <option value="loss">Weight Loss</option>
                   <option value="gain">Weight Gain</option>
                 </select>
               </div>
-
-              {goal === 'loss' && (
-                <div className="form-group row">
-                  <label>Cut Type:</label>
-                  <div>
-                    <label><input type="radio" value="aggressive" checked={cutType === 'aggressive'} onChange={() => setCutType('aggressive')} /> Aggressive</label>
-                    <label><input type="radio" value="moderate" checked={cutType === 'moderate'} onChange={() => setCutType('moderate')} /> Moderate</label>
-                  </div>
+              
+              {/* Only show rate selection if not maintenance */}
+              {goalCategory !== 'maintenance' && (
+                <div className="form-group">
+                  <label>Rate:</label>
+                  <select value={goalRate} onChange={(e) => setGoalRate(e.target.value as 'mild' | 'moderate' | 'extreme')}>
+                    <option value="mild">Mild ({getRateLabel('mild', goalCategory)})</option>
+                    <option value="moderate">Moderate ({getRateLabel('moderate', goalCategory)})</option>
+                    <option value="extreme">Aggressive ({getRateLabel('extreme', goalCategory)})</option>
+                  </select>
                 </div>
               )}
-
-              <button type="submit">Submit</button>
+              
+              <button type="submit">Calculate</button>
             </form>
           </>
         ) : (
           <div>
-            <h3>Profile Setup Complete</h3>
-            <p>Your daily calorie requirement is: {calories} kcal</p>
+            <h3>Calorie Estimate</h3>
+            
+            {goalCategory === 'maintenance' && (
+              <p>Maintenance: {selectedCalories?.toFixed(0)} kcal/day</p>
+            )}
+            
+            {goalCategory === 'loss' && (
+              <>
+                <p>
+                  {goalRate === 'mild' && `Mild Weight Loss (0.25 kg/week): ${selectedCalories?.toFixed(0)} kcal/day`}
+                  {goalRate === 'moderate' && `Weight Loss (0.5 kg/week): ${selectedCalories?.toFixed(0)} kcal/day`}
+                  {goalRate === 'extreme' && `Extreme Weight Loss (1 kg/week): ${selectedCalories?.toFixed(0)} kcal/day`}
+                </p>
+                {duration && <p>Estimated duration to reach goal weight: {duration} weeks</p>}
+              </>
+            )}
+            
+            {goalCategory === 'gain' && (
+              <>
+                <p>
+                  {goalRate === 'mild' && `Mild Weight Gain (0.25 kg/week): ${selectedCalories?.toFixed(0)} kcal/day`}
+                  {goalRate === 'moderate' && `Weight Gain (0.5 kg/week): ${selectedCalories?.toFixed(0)} kcal/day`}
+                  {goalRate === 'extreme' && `Extreme Weight Gain (1 kg/week): ${selectedCalories?.toFixed(0)} kcal/day`}
+                </p>
+                {duration && <p>Estimated duration to reach goal weight: {duration} weeks</p>}
+              </>
+            )}
+            
             {caloriesTooLowWarning && <p className="warning">{caloriesTooLowWarning}</p>}
-            {goal === 'loss' && duration && <p>Estimated duration to reach goal weight: {duration} weeks</p>}
-            <p>{waterRecommendation}</p>
-            <p>{sleepRecommendation}</p>
-            <button onClick={closeModal}>Close</button>
+            
+            <div className="button-group">
+              <button onClick={handleSaveAndClose} className="primary-button">Save to My Stats</button>
+              <button onClick={closeModal} className="secondary-button">Close without Saving</button>
+            </div>
           </div>
         )}
       </div>
