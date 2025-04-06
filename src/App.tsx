@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import './App.css';
 import { useAuth } from '@clerk/clerk-react';  
 import UserProfile from './components/UserProfile';
-import AddCalories from './components/AddCalories';
+import AddCalories from './components/food-tracker/AddCalories';
 import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
 import SignUpPage from './components/SignUp';
