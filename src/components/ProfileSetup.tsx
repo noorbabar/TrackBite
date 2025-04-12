@@ -15,7 +15,6 @@ type UserStats = {
   lastUpdated: Date | null;
 };
 
-// Props type with onSaveStats function
 type ProfileSetupProps = {
   closeModal: () => void;
   onSaveStats?: (stats: UserStats) => void; 
@@ -30,7 +29,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [activityLevel, setActivityLevel] = useState<'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active'>('Sedentary');
   
-  // Goal selection state variables
   const [goalCategory, setGoalCategory] = useState<'maintenance' | 'loss' | 'gain'>('maintenance');
   const [goalRate, setGoalRate] = useState<'mild' | 'moderate' | 'extreme'>('moderate');
   
@@ -40,7 +38,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
   const [caloriesTooLowWarning, setCaloriesTooLowWarning] = useState<string>('');
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   
-  // New state for user stats
   const [userStats, setUserStats] = useState<UserStats>({
     weight: null,
     goalWeight: null,
@@ -55,7 +52,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
     lastUpdated: null
   });
 
-  // Load initial stats if provided
   useEffect(() => {
     if (initialStats) {
       setUserStats(initialStats);
@@ -86,7 +82,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
 
     const tdee = bmr * activityMultipliers[activityLevel];
     
-    // Calculate all calorie options
     const calorieOptions: { [key: string]: number } = {
       maintenance: tdee,
       mildLoss: tdee - 250,
@@ -102,7 +97,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
     let calculatedCalories = null;
     let calculatedDuration = null;
     
-    // Set the selected calories based on user's goal choices
     if (goalCategory === 'maintenance') {
       calculatedCalories = calorieOptions.maintenance;
     } else if (goalCategory === 'loss') {
@@ -128,7 +122,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
         calculatedCalories = calorieOptions.extremeGain;
       }
       
-      // Calculate duration for weight gain
       const totalGain = goalWeight - weightInKg;
       const surplusPerDay = goalRate === 'mild' ? 250 : goalRate === 'moderate' ? 500 : 1000;
       calculatedDuration = Math.ceil((totalGain * 7700) / (surplusPerDay * 7));
@@ -159,7 +152,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
       onSaveStats(updatedStats);
     }
 
-    // Check if calories are too low
     if (goalCategory === 'loss' && goalRate === 'extreme' && 
         ((gender === 'female' && calorieOptions.extremeLoss < 1200) || 
          (gender === 'male' && calorieOptions.extremeLoss < 1500))) {
@@ -189,7 +181,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
     return '';
   };
 
-  // Function to save stats and close modal
   const handleSaveAndClose = () => {
     if (onSaveStats && userStats.recommendedCalories) {
       onSaveStats(userStats);

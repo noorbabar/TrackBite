@@ -47,7 +47,7 @@ function App() {
         {isAuthenticated ? (
           <h3></h3>
         ) : (
-          <h3>Please Sign In</h3>
+          <h3></h3>
         )}
 
         <Routes>

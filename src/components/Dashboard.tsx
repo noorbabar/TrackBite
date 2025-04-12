@@ -1,61 +1,65 @@
 import { useState, useEffect } from 'react';
-import ProfileSetup from './ProfileSetup'; // Use the new component we created
+import ProfileSetup from './ProfileSetup';
+import { ProfileData, UserStats, fetchUserProfile, saveUserProfile } from '../services/api';
 import '../App.css';
-
-// Define the UserStats type
-type UserStats = {
-  weight: number | null;
-  goalWeight: number | null;
-  age: number | null;
-  height: number | null;
-  activityLevel:'Sedentary' | 'Lightly Active' | 'Moderately Active' | 'Very Active';
-  gender: 'male' | 'female';
-  recommendedCalories: number | null;
-  estimatedDuration: number | null;
-  goalCategory: 'maintenance' | 'loss' | 'gain';
-  goalRate: 'mild' | 'moderate' | 'extreme';
-  lastUpdated: Date | null;
-};
-
-// Define a more comprehensive profile data type
-type ProfileData = {
-  weight: number;
-  goalWeight: number;
-  height: number;
-  age: number;
-  gender: 'male' | 'female';
-  activityLevel: string;
-  stats: UserStats;
-  waterRecommendation?: string;
-  sleepRecommendation?: string;
-};
+import { useUser } from "@clerk/clerk-react";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { user, isLoaded: isUserLoaded } = useUser();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Retrieve the profile data from localStorage when the component mounts
-    const storedProfile = localStorage.getItem('profileData');
-    if (storedProfile) {
+    if (!isUserLoaded) return;
+    
+    const loadUserProfile = async () => {
       try {
-        const parsedData = JSON.parse(storedProfile);
-        // Ensure the stats object exists in the parsed data
-        if (!parsedData.stats) {
-          parsedData.stats = {
-            recommendedCalories: null,
-            estimatedDuration: null,
-            goalCategory: 'maintenance',
-            goalRate: 'moderate',
-            lastUpdated: null
-          };
+        setLoading(true);
+        setError(null);
+        
+        const clerkUserId = user?.id;
+        
+        if (!clerkUserId) {
+          setError("No user logged in");
+          setLoading(false);
+          return;
         }
-        setProfileData(parsedData);
-      } catch (error) {
-        console.error('Error parsing profile data:', error);
+        
+        const profile = await fetchUserProfile(clerkUserId);
+        setProfileData(profile);
+      } catch (err) {
+        console.error('Error loading profile:', err);
+        setError('Failed to load profile data');
+        
+        const storedProfile = localStorage.getItem('profileData');
+        if (storedProfile) {
+          try {
+            const parsedData = JSON.parse(storedProfile);
+            if (!parsedData.stats) {
+              parsedData.stats = {
+                recommendedCalories: null,
+                estimatedDuration: null,
+                goalCategory: 'maintenance',
+                goalRate: 'moderate',
+                lastUpdated: null
+              };
+            }
+            setProfileData(parsedData);
+          } catch (parseErr) {
+            console.error('Error parsing profile data:', parseErr);
+          }
+        }
+      } finally {
+        setLoading(false);
       }
+    };
+  
+    if (isUserLoaded) {
+      loadUserProfile();
     }
-  }, []);
+  }, [isUserLoaded, user]);
 
   const openModal = () => setIsModalOpen(true);
 
@@ -63,29 +67,38 @@ const Dashboard = () => {
     setIsModalOpen(false);
   };
 
-  // New function to save user stats
-  const saveUserStats = (stats: UserStats) => {
-    // If we already have profile data, update it with the new stats
+  
+  // Updated function to save user stats to both backend and localStorage
+  const saveUserStats = async (stats: UserStats) => {
+    if (!user?.id) {
+      setError("No user logged in");
+      return;
+    }
+    
     if (profileData) {
       const updatedProfileData = {
         ...profileData,
-        stats: stats
+        stats: {
+          ...stats,
+          lastUpdated: new Date() 
+        }
       };
       
-      // Update duration in the main profile data for compatibility
-      if (stats.goalCategory === 'loss' || stats.goalCategory === 'gain') {
-        updatedProfileData.stats.estimatedDuration = stats.estimatedDuration;
+      try {
+        // Save to backend - need to fix so it uses clerk
+        await saveUserProfile(user.id, updatedProfileData);
+                setProfileData(updatedProfileData);
+        
+        localStorage.setItem('profileData', JSON.stringify(updatedProfileData));
+      } catch (err) {
+        console.error('Error saving to backend:', err);
+        setProfileData(updatedProfileData);
+        localStorage.setItem('profileData', JSON.stringify(updatedProfileData));
+        setError('Changes saved locally but failed to sync with server');
       }
-
-      // Save to state
-      setProfileData(updatedProfileData);
-      
-      // Save to localStorage
-      localStorage.setItem('profileData', JSON.stringify(updatedProfileData));
     }
   };
 
-  // Helper function to get goal display text
   const getGoalDisplayText = (profileData: ProfileData) => {
     const { stats } = profileData;
     
@@ -106,69 +119,72 @@ const Dashboard = () => {
     <div className="card">
       <h2>Welcome to your Dashboard</h2>
 
-      <button onClick={openModal} className="dash-button">
-        {profileData ? 'Edit Profile' : 'Set Up Your Profile'}
-      </button>
-
-      {profileData && (
-        <div className="card">
-          <h3>Your Stats</h3>
-
-          {profileData.stats.weight && (
-            <p><strong>Weight:</strong> {profileData.stats.weight} kg</p>
-          )}
-
-           {profileData.stats.goalWeight && (
-            <p><strong>Goal Weight:</strong> {profileData.stats.goalWeight} kg</p>
-          )}
-
-           {/* Display the new recommended calories */}
-           {profileData.stats.height && (
-            <p><strong>Height:</strong> {profileData.stats.height} cm</p>
-          )}
-
-           {profileData.stats.age && (
-            <p><strong>Age:</strong> {profileData.stats.age} </p>
-          )}
-
-          {profileData.stats.gender && (
-            <p><strong>Gender:</strong> {profileData.stats.gender} </p>
-          )}
-
-           {profileData.stats.activityLevel && (
-            <p><strong>Activity Level:</strong> {profileData.stats.activityLevel} </p>
-          )}
+      {loading ? (
+        <p>Loading your profile data...</p>
+      ) : (
+        <>
+          {error && <div className="error-message">{error}</div>}
           
-          <p><strong>Goal:</strong> {getGoalDisplayText(profileData)}</p>
+          <button onClick={openModal} className="dash-button">
+            {profileData ? 'Edit Profile' : 'Set Up Your Profile'}
+          </button>
 
-          {/* Display the new recommended calories */}
-          {profileData.stats.recommendedCalories && (
-            <p><strong>Daily Calorie Target:</strong> {profileData.stats.recommendedCalories.toFixed(0)} kcal</p>
-          )}
-          
-          {/* Show duration for weight loss or gain goals */}
-          {(profileData.stats.goalCategory === 'loss' || profileData.stats.goalCategory === 'gain') && 
-           profileData.stats.estimatedDuration && (
-            <p><strong>Estimated Duration:</strong> {profileData.stats.estimatedDuration} weeks</p>
-          )}
-          
-          {/* Keep existing recommendations */}
-          {profileData.waterRecommendation && <p>{profileData.waterRecommendation}</p>}
-          {profileData.sleepRecommendation && <p>{profileData.sleepRecommendation}</p>}
-          
-          {/* Show last updated time if available */}
-          {profileData.stats.lastUpdated && (
-            <p><strong>Last Updated:</strong> {new Date(profileData.stats.lastUpdated).toLocaleDateString()}</p>
-          )}
-        </div>
-      )}
+          {profileData && (
+            <div className="card">
+              <h3>Your Stats</h3>
 
-      {isModalOpen && (
-        <ProfileSetup 
-          closeModal={closeModal}
-          onSaveStats={saveUserStats}
-          initialStats={profileData?.stats}
-        />
+              {profileData.stats.weight && (
+                <p><strong>Weight:</strong> {profileData.stats.weight} kg</p>
+              )}
+
+              {profileData.stats.goalWeight && (
+                <p><strong>Goal Weight:</strong> {profileData.stats.goalWeight} kg</p>
+              )}
+
+              {profileData.stats.height && (
+                <p><strong>Height:</strong> {profileData.stats.height} cm</p>
+              )}
+
+              {profileData.stats.age && (
+                <p><strong>Age:</strong> {profileData.stats.age} </p>
+              )}
+
+              {profileData.stats.gender && (
+                <p><strong>Gender:</strong> {profileData.stats.gender} </p>
+              )}
+
+              {profileData.stats.activityLevel && (
+                <p><strong>Activity Level:</strong> {profileData.stats.activityLevel} </p>
+              )}
+              
+              <p><strong>Goal:</strong> {getGoalDisplayText(profileData)}</p>
+
+              {profileData.stats.recommendedCalories && (
+                <p><strong>Daily Calorie Target:</strong> {profileData.stats.recommendedCalories.toFixed(0)} kcal</p>
+              )}
+              
+              {(profileData.stats.goalCategory === 'loss' || profileData.stats.goalCategory === 'gain') && 
+              profileData.stats.estimatedDuration && (
+                <p><strong>Estimated Duration:</strong> {profileData.stats.estimatedDuration} weeks</p>
+              )}
+              
+              {profileData.waterRecommendation && <p>{profileData.waterRecommendation}</p>}
+              {profileData.sleepRecommendation && <p>{profileData.sleepRecommendation}</p>}
+              
+              {profileData.stats.lastUpdated && (
+                <p><strong>Last Updated:</strong> {new Date(profileData.stats.lastUpdated).toLocaleDateString()}</p>
+              )}
+            </div>
+          )}
+
+          {isModalOpen && (
+            <ProfileSetup 
+              closeModal={closeModal}
+              onSaveStats={saveUserStats}
+              initialStats={profileData?.stats}
+            />
+          )}
+        </>
       )}
     </div>
   );
