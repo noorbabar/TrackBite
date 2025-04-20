@@ -32,7 +32,7 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
   const [goalCategory, setGoalCategory] = useState<'maintenance' | 'loss' | 'gain'>('maintenance');
   const [goalRate, setGoalRate] = useState<'mild' | 'moderate' | 'extreme'>('moderate');
   
-  const [calories, setCalories] = useState<{ [key: string]: number }>({});
+  const [, setCalories] = useState<{ [key: string]: number }>({});
   const [selectedCalories, setSelectedCalories] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [caloriesTooLowWarning, setCaloriesTooLowWarning] = useState<string>('');
