@@ -131,26 +131,28 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
     setDuration(calculatedDuration);
 
     // Save to user stats
+    // Save to user stats
     const updatedStats: UserStats = {
-      weight,
-      goalWeight,
-      age,
-      height,
-      activityLevel,
-      gender,
-      recommendedCalories: calculatedCalories,
-      estimatedDuration: calculatedDuration,
-      goalCategory,
-      goalRate,
-      lastUpdated: new Date()
-    };
-    
-    setUserStats(updatedStats);
-    
-    // If onSaveStats prop exists, call it with the updated stats
-    if (onSaveStats) {
-      onSaveStats(updatedStats);
-    }
+    weight,
+    goalWeight,
+    age,
+    height,
+    activityLevel,
+    gender,
+    recommendedCalories: calculatedCalories,
+    estimatedDuration: calculatedDuration,
+    goalCategory,
+    goalRate,
+    lastUpdated: new Date()
+  };
+
+  setUserStats(updatedStats);
+
+  localStorage.setItem('userStats', JSON.stringify(updatedStats));
+
+  if (onSaveStats) {
+    onSaveStats(updatedStats);
+  }
 
     if (goalCategory === 'loss' && goalRate === 'extreme' && 
         ((gender === 'female' && calorieOptions.extremeLoss < 1200) || 

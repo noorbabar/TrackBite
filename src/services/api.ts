@@ -1,6 +1,5 @@
 // src/services/api.ts
 import axios from 'axios';
-import { useAuth } from '@clerk/clerk-react';
 
 
 const BASE_URL = 'http://localhost:5000/api/calories';  
@@ -57,25 +56,26 @@ export interface ProfileData {
 }
 
 // Get user profile from the backend
-
-export const fetchUserProfile = async (userId: string): Promise<ProfileData> => {
-  const { getToken } = useAuth();
-  const token = await getToken();
-  
+export const fetchUserProfile = async (
+  userId: string,
+  token: string
+): Promise<ProfileData> => {
   const response = await fetch(`${API_URL}/users/${userId}/profile`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     }
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch user profile');
-    }
-    
-    return await response.json();
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user profile');
+  }
+
+  return await response.json();
 };
+
+
 export const saveUserProfile = async (
   userId: string,
   profileData: ProfileData,

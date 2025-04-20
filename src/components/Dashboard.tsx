@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ProfileSetup from './ProfileSetup';
 import { ProfileData, UserStats, fetchUserProfile, saveUserProfile } from '../services/api';
 import '../App.css';
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,23 +11,31 @@ const Dashboard = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
   const [error, setError] = useState<string | null>(null);
 
+  const { getToken } = useAuth();
+
   useEffect(() => {
     if (!isUserLoaded) return;
     
     const loadUserProfile = async () => {
+      console.log("Loading profile for:", user?.id);
       try {
         setLoading(true);
         setError(null);
         
         const clerkUserId = user?.id;
+        const token = await getToken();
+        console.log("Token:", token);
+
         
-        if (!clerkUserId) {
+        if (!clerkUserId || !token) {
           setError("No user logged in");
           setLoading(false);
           return;
         }
         
-        const profile = await fetchUserProfile(clerkUserId);
+        const profile = await fetchUserProfile(clerkUserId, token);
+        console.log("Fetched profile:", profile);
+
         setProfileData(profile);
       } catch (err) {
         console.error('Error loading profile:', err);
@@ -59,7 +67,7 @@ const Dashboard = () => {
     if (isUserLoaded) {
       loadUserProfile();
     }
-  }, [isUserLoaded, user]);
+  }, [isUserLoaded, user, getToken]);
 
   const openModal = () => setIsModalOpen(true);
 
@@ -86,8 +94,15 @@ const Dashboard = () => {
       
       try {
         // Save to backend - need to fix so it uses clerk
-        await saveUserProfile(user.id, updatedProfileData);
-                setProfileData(updatedProfileData);
+        const token = await getToken(); 
+        
+        if (!token) {
+          console.error('No token found');
+          return;
+        }
+        
+        await saveUserProfile(user.id, updatedProfileData, token);
+        setProfileData(updatedProfileData);
         
         localStorage.setItem('profileData', JSON.stringify(updatedProfileData));
       } catch (err) {

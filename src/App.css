@@ -273,7 +273,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #83bee6;
+  background: #a8e5b8;
   padding: 12px 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   color: white;
@@ -288,7 +288,7 @@ header {
 }
 
 .logo-container img {
-  max-width: 120px;
+  max-width: 1-0px;
   height: auto;
   margin-right: 10px;
 }
@@ -371,7 +371,7 @@ h2, h3 {
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  border: 4px solid #0066cc;
+  border: 4px solid #ceefd8;
   background: #fff;
   padding: 15px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
@@ -380,7 +380,7 @@ h2, h3 {
 .calories-number {
   font-size: 32px;
   font-weight: bold;
-  color: #0066cc;
+  color: #a4daa8;
 }
 
 .calories-label {
@@ -503,12 +503,12 @@ h2, h3 {
 }
 
 .meal-calories {
-  color: #0066cc;
+  color: #bbeabb;
   font-weight: 500;
 }
 
 .add-food-button {
-  background-color: #0066cc;
+  background-color: #6d8c83;
   color: white;
   border: none;
   border-radius: 4px;
@@ -632,12 +632,12 @@ h2, h3 {
 }
 
 .scan-button {
-  background-color: #0066cc;
+  background-color: #a7d8bf;
   color: white;
 }
 
 .scan-button:hover {
-  background-color: #005bb5;
+  background-color: #8fd394;
 }
 
 .add-custom-button {
@@ -743,7 +743,7 @@ h2, h3 {
 
 .food-info .label {
   font-weight: 500;
-  color: #0066cc;
+  color: #9da4ab;
 }
 
 .form-group {
@@ -815,7 +815,7 @@ h2, h3 {
 
 .add-button {
   padding: 10px 16px;
-  background-color: #0066cc;
+  background-color: #00cca7;
   color: white;
   border: none;
   border-radius: 8px;
@@ -827,24 +827,24 @@ h2, h3 {
 }
 
 .add-button:hover {
-  background-color: #005bb5;
+  background-color: #b7f0e1;
 }
 
 /* Summary card styles */
 .summary-card {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e6f5fe 100%);
+  background: linear-gradient(135deg, #e2f5e4 0%, #e6f5fe 100%);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid #d6e8fa;
+  border: 1px solid #d6fadd;
 }
 
 .summary-title {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #0066cc;
+  color: hsl(312, 100%, 1%);
 }
 
 .summary-stats {
@@ -879,8 +879,8 @@ h2, h3 {
 }
 
 .calories-box {
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: #bcdbbc;
+  color: #70768b;
 }
 
 .protein-box {
@@ -1154,9 +1154,8 @@ footer {
   color: white;
 }
 
-/* Custom MyFitnessPal-like images */
 img {
   max-width: 140px;
-  height: 75px;
+  height: 50px;
   object-fit: contain;
 }

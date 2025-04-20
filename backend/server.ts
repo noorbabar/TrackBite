@@ -9,7 +9,7 @@ import userRoutes from './routes/userRoutes';
 dotenv.config(); 
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 app.use(cors());
 // MongoDB Connection
@@ -33,6 +33,15 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use('/api/calories', calorieRoutes);
 app.use('/api', userRoutes);
+
+app.post('/api/user-stats', (req, res) => {
+  const stats = req.body;
+
+  console.log('Received user stats:', stats);
+
+  // For now, we’ll just return success
+  res.status(200).json({ message: 'Stats received successfully', stats });
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
