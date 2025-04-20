@@ -1,6 +1,6 @@
 # TrackBite - Calorie Tracker & Wellness Companion
 
-note - will be deployed once completed!
+note - the deployed site is not completed
 
 **Are you tired of paying for complicated fitness apps that don’t give you everything you need? TrackBite is here to change that. It's simple, effective, and, best of all, free.**
 
