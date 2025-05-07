@@ -10,11 +10,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const { user, isLoaded: isUserLoaded } = useUser();
   const [error, setError] = useState<string | null>(null);
-
   const { getToken } = useAuth();
 
   useEffect(() => {
-    if (!isUserLoaded) return;
+    if (!isUserLoaded || !user) return;
     
     const loadUserProfile = async () => {
       console.log("Loading profile for:", user?.id);
@@ -24,11 +23,27 @@ const Dashboard = () => {
         
         const clerkUserId = user?.id;
         const token = await getToken();
-        console.log("Token:", token);
-
         
         if (!clerkUserId || !token) {
-          setError("No user logged in");
+          console.warn("No user logged in or token available");
+          // Don't set error here, just create an empty profile
+          const emptyProfile = {
+            userId: clerkUserId || 'anonymous',
+            stats: {
+              weight: null,
+              goalWeight: null,
+              age: null,
+              height: null,
+              activityLevel: 'Sedentary' as const,
+              gender: 'male' as const,
+              recommendedCalories: null,
+              estimatedDuration: null,
+              goalCategory: 'maintenance' as const,
+              goalRate: 'moderate' as const,
+              lastUpdated: null
+            }
+          };
+          setProfileData(emptyProfile);
           setLoading(false);
           return;
         }
@@ -39,32 +54,37 @@ const Dashboard = () => {
         setProfileData(profile);
       } catch (err) {
         console.error('Error loading profile:', err);
-        setError('Failed to load profile data');
         
-        const storedProfile = localStorage.getItem('profileData');
-        if (storedProfile) {
-          try {
-            const parsedData = JSON.parse(storedProfile);
-            if (!parsedData.stats) {
-              parsedData.stats = {
-                recommendedCalories: null,
-                estimatedDuration: null,
-                goalCategory: 'maintenance',
-                goalRate: 'moderate',
-                lastUpdated: null
-              };
+        // Create an empty profile with the user ID rather than showing an error
+        if (user?.id) {
+          const emptyProfile = {
+            userId: user.id,
+            stats: {
+              weight: null,
+              goalWeight: null,
+              age: null,
+              height: null,
+              activityLevel: 'Sedentary' as const,
+              gender: 'male' as const,
+              recommendedCalories: null,
+              estimatedDuration: null,
+              goalCategory: 'maintenance' as const,
+              goalRate: 'moderate' as const,
+              lastUpdated: null
             }
-            setProfileData(parsedData);
-          } catch (parseErr) {
-            console.error('Error parsing profile data:', parseErr);
-          }
+          };
+          setProfileData(emptyProfile);
+          // Don't show error for new users
+          setError(null);
+        } else {
+          setError('Unable to load profile. Please try again later.');
         }
       } finally {
         setLoading(false);
       }
     };
   
-    if (isUserLoaded) {
+    if (isUserLoaded && user) {
       loadUserProfile();
     }
   }, [isUserLoaded, user, getToken]);
@@ -75,47 +95,48 @@ const Dashboard = () => {
     setIsModalOpen(false);
   };
 
-  
-  // Updated function to save user stats to both backend and localStorage
+  // Updated function to save user stats
   const saveUserStats = async (stats: UserStats) => {
     if (!user?.id) {
       setError("No user logged in");
       return;
     }
     
-    if (profileData) {
+    try {
+      setError(null);
+      
       const updatedProfileData = {
-        ...profileData,
+        userId: user.id,
         stats: {
           ...stats,
           lastUpdated: new Date() 
         }
       };
       
-      try {
-        // Save to backend - need to fix so it uses clerk
-        const token = await getToken(); 
-        
-        if (!token) {
-          console.error('No token found');
-          return;
-        }
-        
-        await saveUserProfile(user.id, updatedProfileData, token);
-        setProfileData(updatedProfileData);
-        
-        localStorage.setItem('profileData', JSON.stringify(updatedProfileData));
-      } catch (err) {
-        console.error('Error saving to backend:', err);
-        setProfileData(updatedProfileData);
-        localStorage.setItem('profileData', JSON.stringify(updatedProfileData));
-        setError('Changes saved locally but failed to sync with server');
+      // Try to get a token for authentication
+      const token = await getToken();
+      
+      if (!token) {
+        console.error('No token found');
+        setError('Authentication error. Please sign in again.');
+        return;
       }
+      
+      // Save to backend and localStorage via our API service
+      const savedProfile = await saveUserProfile(user.id, updatedProfileData, token);
+      setProfileData(savedProfile);
+      
+      console.log("Profile saved successfully:", savedProfile);
+    } catch (err) {
+      console.error('Error saving profile:', err);
+      setError('Failed to save profile. Changes saved locally but server sync failed.');
     }
   };
 
   const getGoalDisplayText = (profileData: ProfileData) => {
     const { stats } = profileData;
+    
+    if (!stats) return 'Not set';
     
     if (stats.goalCategory === 'maintenance') {
       return 'Maintenance';
@@ -141,10 +162,10 @@ const Dashboard = () => {
           {error && <div className="error-message">{error}</div>}
           
           <button onClick={openModal} className="dash-button">
-            {profileData ? 'Edit Profile' : 'Set Up Your Profile'}
+            {profileData?.stats?.weight ? 'Edit Profile' : 'Set Up Your Profile'}
           </button>
 
-          {profileData && (
+          {profileData && profileData.stats && (
             <div className="card">
               <h3>Your Stats</h3>
 

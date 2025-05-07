@@ -1,33 +1,12 @@
 // src/services/api.ts
-import axios from 'axios';
 
-
-const BASE_URL = 'http://localhost:5000/api/calories';  
-
-export const getCalories = async () => {
-  try {
-    const response = await axios.get(BASE_URL);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching calories:', error);
-    return [];
-  }
-};
-
-// Add a new calorie entry
-export const addCalorie = async (name: string, calories: number) => {
-  try {
-    const response = await axios.post(BASE_URL + '/add', { name, calories });
-    return response.data; 
-  } catch (error) {
-    console.error('Error adding calorie:', error);
-    return null;  
-  }
-};
-
-// src/services/api.ts
-
-const API_URL = 'http://localhost:5000/api'; 
+// Define the types for profile data
+export interface ProfileData {
+  userId: string;
+  stats: UserStats;
+  waterRecommendation?: string;
+  sleepRecommendation?: string;
+}
 
 export interface UserStats {
   weight: number | null;
@@ -43,87 +22,135 @@ export interface UserStats {
   lastUpdated: Date | null;
 }
 
-export interface ProfileData {
-  weight: number;
-  goalWeight: number;
-  height: number;
-  age: number;
-  gender: 'male' | 'female';
-  activityLevel: string;
-  stats: UserStats;
-  waterRecommendation?: string;
-  sleepRecommendation?: string;
-}
+const API_URL = 'track-bite.vercel.app' || 'http://localhost:5173/';
 
-// Get user profile from the backend
-export const fetchUserProfile = async (
-  userId: string,
-  token: string
-): Promise<ProfileData> => {
-  const response = await fetch(`${API_URL}/users/${userId}/profile`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+/**
+ * Fetch user profile from the backend, with fallback to localStorage
+ */
+export const fetchUserProfile = async (userId: string, token: string): Promise<ProfileData> => {
+  try {
+    const response = await fetch(`${API_URL}/users/profile/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch user profile');
+    const data = await response.json();
+    console.log("API returned profile data:", data);
+    
+    // If backend returns null or incomplete data, check localStorage
+    if (!data || !data.stats) {
+      const localData = getLocalProfile(userId);
+      if (localData) {
+        console.log("Using local profile data", localData);
+        return localData;
+      }
+    }
+    
+    return data;
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    
+    // If API call fails, try to get data from localStorage
+    const localData = getLocalProfile(userId);
+    if (localData) {
+      console.log("Using local profile data after API error", localData);
+      return localData;
+    }
+    
+    // If no local data exists, create and return a new empty profile
+    const newProfile: ProfileData = {
+      userId,
+      stats: createEmptyStats()
+    };
+    
+    // Save this empty profile to localStorage
+    localStorage.setItem(`userProfile_${userId}`, JSON.stringify(newProfile));
+    
+    return newProfile;
   }
-
-  return await response.json();
 };
 
-
-export const saveUserProfile = async (
-  userId: string,
-  profileData: ProfileData,
-  token: string
-): Promise<ProfileData> => {
+/**
+ * Save user profile to both backend and localStorage
+ */
+export const saveUserProfile = async (userId: string, profileData: ProfileData, token: string): Promise<ProfileData> => {
+  // Always update local storage first for immediate feedback
+  saveLocalProfile(userId, profileData);
+  
   try {
-    const response = await fetch(`${API_URL}/users/${userId}/profile`, {
-      method: 'PUT',
+    // Then try to update the backend
+    const response = await fetch(`${API_URL}/users/profile/${userId}`, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(profileData)
     });
 
     if (!response.ok) {
-      throw new Error('Failed to save user profile');
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    return await response.json();
+    const updatedData = await response.json();
+    return updatedData;
   } catch (error) {
-    console.error('Error saving user profile:', error);
-    throw error;
+    console.error("Error saving profile to backend:", error);
+    // Return the locally saved data since that was successful
+    return profileData;
   }
 };
 
-export const updateUserStats = async (
-  userId: string,
-  stats: UserStats,
-  token: string
-): Promise<UserStats> => {
+/**
+ * Get profile from localStorage
+ */
+function getLocalProfile(userId: string): ProfileData | null {
+  const storedData = localStorage.getItem(`userProfile_${userId}`);
+  if (!storedData) return null;
+  
   try {
-    const response = await fetch(`${API_URL}/users/${userId}/stats`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(stats)
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update user stats');
+    const profileData = JSON.parse(storedData);
+    
+    // Ensure stats object exists and has all required fields
+    if (!profileData.stats) {
+      profileData.stats = createEmptyStats();
     }
-
-    return await response.json();
+    
+    return profileData;
   } catch (error) {
-    console.error('Error updating user stats:', error);
-    throw error;
+    console.error("Error parsing stored profile:", error);
+    return null;
   }
-};
+}
+
+/**
+ * Save profile to localStorage
+ */
+function saveLocalProfile(userId: string, profileData: ProfileData): void {
+  localStorage.setItem(`userProfile_${userId}`, JSON.stringify(profileData));
+}
+
+/**
+ * Create empty stats object with default values
+ */
+function createEmptyStats(): UserStats {
+  return {
+    weight: null,
+    goalWeight: null,
+    age: null,
+    height: null,
+    activityLevel: 'Sedentary',
+    gender: 'male',
+    recommendedCalories: null,
+    estimatedDuration: null,
+    goalCategory: 'maintenance',
+    goalRate: 'moderate',
+    lastUpdated: null
+  };
+}
