@@ -22,7 +22,7 @@ export interface UserStats {
   lastUpdated: Date | null;
 }
 
-const API_URL = 'track-bite.vercel.app' || 'http://localhost:5173/';
+const API_URL = 'http://localhost:5173/';
 
 /**
  * Fetch user profile from the backend, with fallback to localStorage
@@ -154,3 +154,71 @@ function createEmptyStats(): UserStats {
     lastUpdated: null
   };
 }
+// src/services/api.ts
+
+// Define a proper type for calorie records
+export interface CalorieRecord {
+  _id: string;
+  name: string;
+  calories: number;
+  date?: string;
+  userId?: string;
+}
+
+/**
+ * Fetches all calorie records from the API
+ */
+export const getCalories = async (): Promise<CalorieRecord[]> => {
+  try {
+    const response = await fetch(`${API_URL}/calories`);
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch calories:', error);
+    return [];
+  }
+};
+
+/**
+ * Adds a new calorie record
+ */
+export const addCalorie = async (calorieData: Omit<CalorieRecord, '_id'>): Promise<CalorieRecord | null> => {
+  try {
+    const response = await fetch(`${API_URL}/calories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(calorieData),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to add calorie record:', error);
+    return null;
+  }
+};
+
+/**
+ * Deletes a calorie record by ID
+ */
+export const deleteCalorie = async (id: string): Promise<boolean> => {
+  try {
+    const response = await fetch(`${API_URL}/calories/${id}`, {
+      method: 'DELETE',
+    });
+    
+    return response.ok;
+  } catch (error) {
+    console.error('Failed to delete calorie record:', error);
+    return false;
+  }
+};
