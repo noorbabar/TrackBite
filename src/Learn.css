@@ -1,0 +1,202 @@
+/* TrackBite Learn Page Styles */
+
+/* Custom Colors */
+:root {
+    --mint-primary: #34d399;
+    --mint-dark: #065f46;
+    --mint-accent: #047857;
+    --mint-light: #d1fae5;
+    --mint-gradient-from: #059669;
+    --mint-gradient-to: #10b981;
+  }
+  
+  /* General Styles */
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  /* Hero Section */
+  .bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--mint-gradient-from), var(--mint-gradient-to));
+  }
+  
+  .learn-page h1 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  
+  /* Card Styling */
+  .learn-page .bg-white {
+    transition: all 0.3s ease;
+  }
+  
+  .learn-page .bg-white:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Tab Navigation */
+  .learn-page .border-mint-primary {
+    border-color: var(--mint-primary);
+  }
+  
+  .learn-page .text-mint-primary {
+    color: var(--mint-primary);
+  }
+  
+  .learn-page .text-mint-dark {
+    color: var(--mint-dark);
+  }
+  
+  .learn-page .text-mint-accent {
+    color: var(--mint-accent);
+  }
+  
+  .learn-page .text-mint-light {
+    color: var(--mint-light);
+  }
+  
+  .learn-page button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.3);
+  }
+  
+  /* Back Button */
+  .learn-page button.flex.items-center {
+    transition: transform 0.2s ease;
+  }
+  
+  .learn-page button.flex.items-center:hover {
+    transform: translateX(-3px);
+  }
+  
+  /* Tags Styling */
+  .bg-blue-100 {
+    background-color: #dbeafe;
+  }
+  
+  .bg-green-100 {
+    background-color: #d1fae5;
+  }
+  
+  .bg-yellow-100 {
+    background-color: #fef3c7;
+  }
+  
+  .bg-purple-100 {
+    background-color: #ede9fe;
+  }
+  
+  /* Article/Recipe Content */
+  .prose {
+    max-width: 65ch;
+    color: #374151;
+  }
+  
+  .prose h3 {
+    color: var(--mint-dark);
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    font-weight: 600;
+  }
+  
+  .prose p {
+    margin-bottom: 1.25em;
+  }
+  
+  .prose ul, .prose ol {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+  
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+  
+  .prose strong {
+    color: var(--mint-dark);
+    font-weight: 600;
+  }
+  
+  /* Footer */
+  .bg-mint-dark {
+    background-color: var(--mint-dark);
+  }
+  
+  .border-mint-light\/30 {
+    border-color: rgba(209, 250, 229, 0.3);
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .learn-page h1 {
+      font-size: 2rem;
+    }
+    
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Custom Image Shadow */
+  .learn-page img {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Recipe Card Animation */
+  .learn-page .bg-white:hover img {
+    opacity: 0.9;
+  }
+  
+  /* Accessibility Improvements */
+  .learn-page a:focus, 
+  .learn-page button:focus {
+    outline: 2px solid var(--mint-primary);
+    outline-offset: 2px;
+  }
+  
+  /* Read More Button */
+  .learn-page .text-mint-primary {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .learn-page .text-mint-primary:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--mint-accent);
+    transition: width 0.3s ease;
+  }
+  
+  .learn-page .text-mint-primary:hover:after {
+    width: 100%;
+  }
+  
+  /* Smooth Scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Print Styles */
+  @media print {
+    .learn-page .bg-gradient-to-r,
+    .learn-page .bg-mint-dark {
+      background: white !important;
+      color: black !important;
+    }
+    
+    .learn-page button {
+      display: none;
+    }
+  }

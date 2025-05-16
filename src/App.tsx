@@ -23,7 +23,7 @@ function Header() {
 
   return (
        <header className="flex items-center p-4 bg-white shadow-md">
-       <img src="/public/TrackBiteLogo.png" alt="TrackBite Logo" className="w-16 h-16 object-contain mr-3" />      
+       <img src="/TrackBiteLogo.png" alt="TrackBite Logo" className="w-16 h-16 object-contain mr-3" />      
       <nav>
         <button onClick={() => handleNavigate('/')}>Dashboard</button>
         <button onClick={() => handleNavigate('/add-calories')}>Meal Log</button>

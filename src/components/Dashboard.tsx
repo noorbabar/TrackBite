@@ -16,7 +16,6 @@ const Dashboard = () => {
     if (!isUserLoaded || !user) return;
     
     const loadUserProfile = async () => {
-      console.log("Loading profile for:", user?.id);
       try {
         setLoading(true);
         setError(null);
