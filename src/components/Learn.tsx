@@ -23,6 +23,7 @@ type Recipe = {
 };
 
 type ItemType = "article" | "recipe";
+
 const Learn = () => {
   const [activeTab, setActiveTab] = useState("articles");
 
@@ -239,7 +240,6 @@ const Learn = () => {
     }
   ];
 
-  // Recipe data
   const recipes = [
     {
       id: 1,
@@ -406,181 +406,146 @@ const Learn = () => {
     }
   ];
 
-  // Selected article/recipe state
   const [selectedItem, setSelectedItem] = useState<Article | Recipe | null>(null);
   const [itemType, setItemType] = useState<ItemType | null>(null);
 
-
-  // Select an item to view
   const viewItem = (item: Article | Recipe, type: ItemType) => {
     setSelectedItem(item);
     setItemType(type);
     window.scrollTo(0, 0);
   };
 
-  // Go back to list view
   const goBack = () => {
     setSelectedItem(null);
     setItemType(null);
   };
 
   return (
-    <div className="learn-page bg-gray-50 min-h-screen">
-      {/* Hero section */}
-      <div className="bg-gradient-to-r from-mint-gradient-from to-mint-gradient-to text-white py-12">
-        <div className="container mx-auto px-4">
-          
-          <h1 className="text-4xl font-bold mb-4">TrackLearn: Knowledge is Power</h1>
-          <p className="text-xl">
-            Get informed and take control of your fitness journey with our educational resources. 
-            Learn how to track your nutrition, understand your body, and achieve your goals.
-          </p>
+    <div className="bg-gray-50 min-h-screen">
+      <header className="bg-white py-6 shadow-sm border-b border-gray-100">
+        <div style={{ textAlign: 'center', width: '100%' }} className="px-4">
+        <h1 style={{ textAlign: 'center' }} className="text-3xl font-bold text-mint-dark">TrackLearn</h1>
+        <p style={{ textAlign: 'center' }} className="text-gray-600">Knowledge in bite-sized pages</p>
         </div>
-      </div>
+      </header>
 
-      {/* Main content */}
       <div className="container mx-auto px-4 py-8">
-        {/* If an item is selected, show its detailed view */}
         {selectedItem ? (
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <button 
               onClick={goBack} 
-              className="mb-4 flex items-center text-mint-dark hover:text-mint-primary"
+              className="back-button mb-6"
             >
-              ← Back to {itemType === "article" ? "Articles" : "Recipes"}
+              <span className="back-arrow">←</span>
+              <span>Back to {itemType === "article" ? "Articles" : "Recipes"}</span>
             </button>
             
-            <h2 className="text-3xl font-bold mb-4">{selectedItem.title}</h2>
+            <h2 className="text-3xl font-bold mb-6 text-mint-dark">{selectedItem.title}</h2>
             
-            {selectedItem && itemType === "recipe" && (
-  <div className="mb-6">
-    <img 
-      src={(selectedItem as Recipe).image} 
-      alt={selectedItem.title}
-      className="w-full h-64 object-cover rounded-lg mb-4"
-    />
-    <div className="flex flex-wrap gap-3 mb-4">
-      <span className="bg-blue-100 text-mint-dark px-3 py-1 rounded-full text-sm font-medium">
-        Protein: {(selectedItem as Recipe).macros.protein}g
-      </span>
-      <span className="bg-green-100 text-mint-dark px-3 py-1 rounded-full text-sm font-medium">
-        Carbs: {(selectedItem as Recipe).macros.carbs}g
-      </span>
-      <span className="bg-yellow-100 text-mint-dark px-3 py-1 rounded-full text-sm font-medium">
-        Fat: {(selectedItem as Recipe).macros.fat}g
-      </span>
-      <span className="bg-purple-100 text-mint-accent px-3 py-1 rounded-full text-sm font-medium">
-        Calories: {(selectedItem as Recipe).macros.calories}
-      </span>
-    </div>
-  </div>
-)}
+            {itemType === "recipe" && (
+              <div className="mb-6">
+                <div className="flex flex-wrap gap-3 mb-4">
+                  <span className="macro-badge protein">
+                    Protein: {(selectedItem as Recipe).macros.protein}g
+                  </span>
+                  <span className="macro-badge carbs">
+                    Carbs: {(selectedItem as Recipe).macros.carbs}g
+                  </span>
+                  <span className="macro-badge fats">
+                    Fat: {(selectedItem as Recipe).macros.fat}g
+                  </span>
+                  <span className="macro-badge calories">
+                    Calories: {(selectedItem as Recipe).macros.calories}
+                  </span>
+                </div>
+              </div>
+            )}
+            
             <div 
-              className="prose max-w-none"
+              className="article-content"
               dangerouslySetInnerHTML={{ __html: selectedItem.content }}
             />
           </div>
         ) : (
           <>
-            {/* Tab navigation */}
-            <div className="flex border-b mb-6">
-              <button
-                className={`px-4 py-2 font-medium ${activeTab === "articles" ? "border-b-2 border-mint-primary text-mint-primary" : "text-gray-600"}`}
-                onClick={() => setActiveTab("articles")}
-              >
-                Educational Articles
-              </button>
-              <button
-                className={`px-4 py-2 font-medium ${activeTab === "recipes" ? "border-b-2 border-mint-primary text-mint-primary" : "text-gray-600"}`}
-                onClick={() => setActiveTab("recipes")}
-              >
-                Macro-Friendly Recipes
-              </button>
+            <div className="tab-container">
+            <button
+              className={`tab-button ${activeTab === "articles" ? "active" : ""}`}
+              onClick={() => setActiveTab("articles")}
+            >
+              Educational Articles
+            </button>
+
+            <button
+              className={`tab-button ${activeTab === "recipes" ? "active" : ""}`}
+              onClick={() => setActiveTab("recipes")}
+            >
+              Macro-Friendly Recipes
+            </button>
             </div>
 
-            {/* Articles tab */}
             {activeTab === "articles" && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {articles.map(article => (
-                  <div 
+              <div className="article-container">
+                {articles.map((article, index) => (
+                  <article 
                     key={article.id} 
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    className={`article-cube ${index === 0 ? 'featured-cube' : ''}`}
                     onClick={() => viewItem(article, "article")}
                   >
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-2 text-mint-dark">{article.title}</h3>
-                      <p className="text-gray-600">{article.preview}</p>
-                      <button className="mt-4 text-mint-primary font-medium hover:text-mint-accent">
-                        Read More →
-                      </button>
+                    <div className="cube-header">
+                      <h2>{article.title}</h2>
                     </div>
-                  </div>
+                    <div className="cube-content">
+                      <p>{article.preview}</p>
+                    </div>
+                    <div className="cube-footer">
+                      <span className="cube-category">Education</span>
+                      <a href="#" className="cube-button" onClick={(e) => {
+                        e.preventDefault();
+                        viewItem(article, "article");
+                      }}>Read</a>
+                    </div>
+                    <div className="page-corner"></div>
+                    <div className="page-number">{article.id}</div>
+                  </article>
                 ))}
               </div>
             )}
 
-            {/* Recipes tab */}
             {activeTab === "recipes" && (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recipes.map(recipe => (
-                  <div 
+              <div className="article-container">
+                {recipes.map((recipe) => (
+                  <article 
                     key={recipe.id} 
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    className="article-cube"
                     onClick={() => viewItem(recipe, "recipe")}
                   >
-                    <img 
-                      src={recipe.image} 
-                      alt={recipe.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-2 text-mint-dark">{recipe.title}</h3>
-                      <p className="text-gray-600 mb-3">{recipe.preview}</p>
-                      <div className="flex flex-wrap gap-2 mt-2 mb-3">
-                        <span className="bg-blue-100 text-mint-dark px-2 py-1 rounded-full text-xs font-medium">
-                          P: {recipe.macros.protein}g
-                        </span>
-                        <span className="bg-green-100 text-mint-dark px-2 py-1 rounded-full text-xs font-medium">
-                          C: {recipe.macros.carbs}g
-                        </span>
-                        <span className="bg-yellow-100 text-mint-dark px-2 py-1 rounded-full text-xs font-medium">
-                          F: {recipe.macros.fat}g
-                        </span>
-                      </div>
-                      <button className="text-mint-primary font-medium hover:text-mint-accent">
-                        View Recipe →
-                      </button>
+                    <div className="cube-header">
+                    <h2>{recipe.title}</h2>
                     </div>
-                  </div>
+                    <div className="cube-content">
+                      <div className="flex gap-1 mb-2">
+                        <span> P:{recipe.macros.protein}g </span>
+                        <span> C:{recipe.macros.carbs}g </span>
+                        <span> F:{recipe.macros.fat}g </span>
+                      </div>
+                      <p>{recipe.preview}</p>
+                    </div>
+                    <div className="cube-footer">
+                      <span className="cube-category">Recipe</span>
+                      <a href="#" className="cube-button" onClick={(e) => {
+                        e.preventDefault();
+                        viewItem(recipe, "recipe");
+                      }}>View</a>
+                    </div>
+                    <div className="page-corner"></div>
+                    <div className="page-number">{recipe.id}</div>
+                  </article>
                 ))}
               </div>
             )}
           </>
         )}
-      </div>
-
-      {/* Footer */}
-      <div className="bg-mint-dark text-white py-8 mt-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between">
-            <div className="mb-6 md:mb-0">
-              <h3 className="text-xl font-bold mb-2">TrackBite</h3>
-              <p className="text-mint-light">Your companion for nutrition tracking and education</p>
-            </div>
-            <div>
-              <h4 className="font-bold mb-2">Quick Links</h4>
-              <ul>
-                <li className="mb-1"><a href="#" className="text-mint-light hover:text-white">Dashboard</a></li>
-                <li className="mb-1"><a href="#" className="text-mint-light hover:text-white">Tracking</a></li>
-                <li className="mb-1"><a href="#" className="text-mint-light hover:text-white">Settings</a></li>
-                <li className="mb-1"><a href="#" className="text-mint-light hover:text-white">Contact Support</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-mint-light/30 text-center text-mint-light">
-            <p>&copy; 2025 TrackBite. All rights reserved.</p>
-          </div>
-        </div>
       </div>
     </div>
   );
