@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Food, FoodLogEntry, CustomFood, DailyTotals, MacroPercentages } from './types';
 import { addFoodToLog } from './mockApi';
-import DailySummary from './ DailySummary';
+import DailySummary from './DailySummary';
 import FoodSearch from './FoodSearch';
 import FoodLog from './FoodLog';
 import AddFoodModal from './AddFoodModal';
@@ -96,10 +96,9 @@ const AddCalories: React.FC = () => {
   return (
     <div className="tracker-container">
       <div className="tracker-header">
-        <h1>Food & Nutrition Tracker</h1>
+        <h1>Nutrition Tracker</h1>
       </div>
       
-      {/* Date selection */}
       <div className="date-selector">
         <label>Date:</label>
         <input
@@ -109,19 +108,16 @@ const AddCalories: React.FC = () => {
         />
       </div>
 
-      {/* Daily Summary Component */}
       <DailySummary 
         dailyTotals={dailyTotals} 
         macroPercentages={macroPercentages} 
       />
 
-      {/* Food Search Component */}
       <FoodSearch 
         onFoodSelect={handleFoodSelection}
         onAddCustomClick={() => setShowAddModal(true)}
       />
 
-      {/* Food Log Component */}
       <FoodLog 
         foodLog={foodLog}
         currentDate={currentDate}
