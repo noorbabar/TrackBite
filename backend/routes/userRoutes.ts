@@ -1,17 +1,11 @@
-// backend/routes/userRoutes.ts
-import { Router } from 'express';
+import * as express from 'express';
 import { authenticateUser } from '../middlewares/authenticate';
-import { getProfile, saveProfile } from '../controllers/userController';
 
-const router = Router();
+const router = express.Router();
 
-// Route for getting user profile with authentication
-router.get('/profile', authenticateUser, getProfile);
-
-// Route for getting specific user profile with ID (with authentication)
-router.get('/profile/:userId', authenticateUser, getProfile);
-
-// Route for saving user profile (with authentication)
-router.post('/profile/:userId', authenticateUser, saveProfile);
+router.get('/dashboard', authenticateUser, (req, res) => {
+  const userId = (req as any).userId;
+  res.json({ message: `Hello user ${userId}` });
+});
 
 export default router;
