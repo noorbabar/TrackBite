@@ -36,10 +36,7 @@ app.use('/api', userRoutes);
 
 app.post('/api/user-stats', (req, res) => {
   const stats = req.body;
-
   console.log('Received user stats:', stats);
-
-  // For now, we’ll just return success
   res.status(200).json({ message: 'Stats received successfully', stats });
 });
 
