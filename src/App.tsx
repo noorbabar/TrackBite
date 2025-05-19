@@ -7,10 +7,8 @@ import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
-import Progress from './components/Progress';
 import Learn from './components/Learn';
 import { Logout } from './components/Logout'; 
-
 
 function Header() {
   const navigate = useNavigate();
@@ -53,12 +51,12 @@ function App() {
         <Routes>
           <Route path="/" element={isAuthenticated ? <Dashboard /> : <Landing />} />
           <Route path="/add-calories" element={isAuthenticated ? <AddCalories /> : <Landing />} />
-          <Route path="/progress" element={isAuthenticated ? <Progress /> : <Landing />} />
           <Route path="/user-profile" element={isAuthenticated ? <UserProfile /> : <Landing />} />
           <Route path="/learn" element={isAuthenticated ? <Learn /> : <Learn />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/add-calories" element={<AddCalories />} />
         </Routes>
       </div>
     </Router>
