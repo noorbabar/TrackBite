@@ -1,6 +1,5 @@
 // src/services/api.ts
 
-// Define the types for profile data
 export interface ProfileData {
   userId: string;
   stats: UserStats;
