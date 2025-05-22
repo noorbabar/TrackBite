@@ -9,6 +9,7 @@ import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
 import Learn from './components/Learn';
 import { Logout } from './components/Logout'; 
+import React from 'react';
 
 function Header() {
   const navigate = useNavigate();

@@ -6,11 +6,11 @@ import DailySummary from './DailySummary';
 import FoodSearch from './FoodSearch';
 import FoodLog from './FoodLog';
 import AddFoodModal from './AddFoodModal';
-import MacroPresetSelector from './macroPresetSelector';
+import MacroPresetSelector from './MacroPresetSelector';
 import DetailedNutritionView from './DetailedNutritionView';
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { fetchUserProfile } from '../../services/api';
-import { MACRO_PRESETS } from './macroPresets';
+import { MACRO_PRESETS } from './MacroPresets';
 
 const AddCalories: React.FC = () => {
   const [nutritionGoals, setNutritionGoals] = useState<{ calories: number; protein: number; carbs: number; fat: number } | null>(null);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import '../Learn.css';
+import React from 'react';
 
 type Article = {
   id: number;

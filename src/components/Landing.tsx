@@ -1,5 +1,6 @@
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import "../App.css";
+import React from 'react';
 
 const Landing = () => {
   return (

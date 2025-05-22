@@ -1,6 +1,6 @@
 import React from 'react';
 import { MacroPresetType } from './types';
-import { MACRO_PRESETS } from './macroPresets';
+import { MACRO_PRESETS } from './MacroPresets';
 
 interface MacroPresetSelectorProps {
   selectedPreset: MacroPresetType;

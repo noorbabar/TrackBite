@@ -6,6 +6,7 @@ import '../App.css';
 import LogWeight from './LogWeight';
 import { ProfileData, UserStats, fetchUserProfile, saveUserProfile, logWeight } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

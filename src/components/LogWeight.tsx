@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../App.css';
+import React from 'react';
 
 interface LogWeightProps {
   closeModal: () => void;
