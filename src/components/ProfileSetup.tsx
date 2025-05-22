@@ -95,7 +95,7 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
     const minCalories = gender === 'female' ? 1200 : 1500;
 
     let calculatedCalories = tdee;
-    let estimatedDurationWeeks = null;
+    let estimatedDurationWeeks: number | null = null;
 
     if (goalCategory === 'maintenance') {
       calculatedCalories = tdee; 

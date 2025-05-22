@@ -1,6 +1,6 @@
 // backend/controllers/userController.ts
 import { Request, Response } from 'express';
-import UserModel from '../models/user';
+import UserModel from '../models/User';
 
 interface UserRequest extends Request {
   userId?: string;
