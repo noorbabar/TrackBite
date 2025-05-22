@@ -152,4 +152,4 @@ export interface MacroPreset {
 export interface DetailedNutritionGoals extends DetailedNutrition {
 }
 
-export type MacroPresetType = 'balanced' | 'low-carb' | 'keto' | 'high-protein' | 'mediterranean' | 'custom';
+export type MacroPresetType = 'balanced' | 'lowCarb' | 'keto' | 'highProtein' | 'mediterranean' | 'custom';

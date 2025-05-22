@@ -25,5 +25,10 @@ export const MACRO_PRESETS: Record<string, MacroPreset> = {
     name: 'Mediterranean',
     description: 'Heart-healthy Mediterranean style',
     ratios: { protein: 20, carbs: 50, fat: 30 }
+  }, 
+  custom: {
+    name: 'Custom',
+    description: 'Set your own macro ratios',
+    ratios: { protein: 0, carbs: 0, fat: 0 }
   }
 };

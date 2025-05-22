@@ -15,19 +15,16 @@ const MacroPresetSelector: React.FC<MacroPresetSelectorProps> = ({
   customRatios,
   onCustomRatiosChange
 }) => {
-  // Cast MACRO_PRESETS to Record<string, MacroPreset> so preset type is known
-  const presets = MACRO_PRESETS as Record<string, MacroPreset>;
-
   return (
     <div className="macro-preset-selector">
       <h3>Macro Distribution</h3>
       
       <div className="preset-grid">
-        {Object.entries(presets).map(([key, preset]) => (
+        {(Object.entries(MACRO_PRESETS) as [MacroPresetType, MacroPreset][]).map(([key, preset]) => (
           <div 
             key={key}
             className={`preset-card ${selectedPreset === key ? 'selected' : ''}`}
-            onClick={() => onPresetChange(key as MacroPresetType)}
+            onClick={() => onPresetChange(key)}
           >
             <h4>{preset.name}</h4>
             <p className="preset-description">{preset.description}</p>
@@ -38,7 +35,8 @@ const MacroPresetSelector: React.FC<MacroPresetSelectorProps> = ({
             </div>
           </div>
         ))}
-        
+
+        {/* Custom Preset card */}
         <div 
           className={`preset-card ${selectedPreset === 'custom' ? 'selected' : ''}`}
           onClick={() => onPresetChange('custom')}
