@@ -1,18 +1,73 @@
 // AddCalories.tsx
-import React, { useState } from 'react';
-import { Food, FoodLogEntry, CustomFood, DailyTotals, MacroPercentages } from './types';
+import React, { useState, useEffect } from 'react';
+import { Food, FoodLogEntry, CustomFood, DailyTotals, MacroPercentages, MacroPresetType } from './types';
 import { addFoodToLog } from './mockApi';
 import DailySummary from './DailySummary';
 import FoodSearch from './FoodSearch';
 import FoodLog from './FoodLog';
 import AddFoodModal from './AddFoodModal';
+import MacroPresetSelector from './macroPresetSelector';
+import DetailedNutritionView from './DetailedNutritionView';
+import { useUser, useAuth } from "@clerk/clerk-react";
+import { fetchUserProfile } from '../../services/api';
+import { MACRO_PRESETS } from './macroPresets';
 
 const AddCalories: React.FC = () => {
+  const [nutritionGoals, setNutritionGoals] = useState<{ calories: number; protein: number; carbs: number; fat: number } | null>(null);
+  const [, setLoading] = useState(true);
+  const { user, isLoaded: isUserLoaded } = useUser();
+  const { getToken } = useAuth();
+
   const [foodLog, setFoodLog] = useState<FoodLogEntry[]>([]);
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+
+  const [showMacroSettings, setShowMacroSettings] = useState(false);
+  const [showDetailedView, setShowDetailedView] = useState(false);
+  const [selectedMacroPreset, setSelectedMacroPreset] = useState<MacroPresetType>('balanced');
+  const [customMacroRatios, setCustomMacroRatios] = useState({ protein: 25, carbs: 45, fat: 30 });
+
+  useEffect(() => {
+    if (!isUserLoaded || !user) return;
   
+    const loadUserGoals = async () => {
+      try {
+        setLoading(true);
+        const clerkUserId = user?.id;
+        const token = await getToken();
+  
+        if (!clerkUserId || !token) return;
+  
+        const profile = await fetchUserProfile(clerkUserId, token);
+        
+        if (profile?.stats?.recommendedCalories) {
+          const activeRatios = selectedMacroPreset === 'custom' 
+            ? customMacroRatios 
+            : MACRO_PRESETS[selectedMacroPreset].ratios;
+
+          const totalCalories = profile.stats.recommendedCalories;
+          const proteinCalories = totalCalories * (activeRatios.protein / 100);
+          const carbCalories = totalCalories * (activeRatios.carbs / 100);
+          const fatCalories = totalCalories * (activeRatios.fat / 100);
+          
+          setNutritionGoals({
+            calories: totalCalories,
+            protein: proteinCalories / 4,
+            carbs: carbCalories / 4, 
+            fat: fatCalories / 9 
+          });
+        }
+      } catch (error) {
+        console.error('Error loading nutrition goals:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    loadUserGoals();
+  }, [isUserLoaded, user, getToken, selectedMacroPreset, customMacroRatios]);
+
   // Calculate daily totals
   const dailyTotals: DailyTotals = foodLog
     .filter(entry => entry.date === currentDate)
@@ -27,7 +82,6 @@ const AddCalories: React.FC = () => {
       },
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
     );
-
 
   const totalMacroGrams = dailyTotals.protein + dailyTotals.carbs + dailyTotals.fat;
   const macroPercentages: MacroPercentages = {
@@ -93,10 +147,22 @@ const AddCalories: React.FC = () => {
     setFoodLog(foodLog.filter(entry => entry.id !== id));
   };
 
+  const handleMacroPresetChange = (preset: MacroPresetType) => {
+    setSelectedMacroPreset(preset);
+  };
+
+  const handleCustomRatiosChange = (ratios: { protein: number; carbs: number; fat: number }) => {
+    // Ensure ratios add up to 100%
+    const total = ratios.protein + ratios.carbs + ratios.fat;
+    if (total <= 100) {
+      setCustomMacroRatios(ratios);
+    }
+  };
+
   return (
     <div className="tracker-container">
       <div className="tracker-header">
-        <h1>Nutrition Tracker</h1>
+        <h1>Nutrition Log</h1>
       </div>
       
       <div className="date-selector">
@@ -108,9 +174,25 @@ const AddCalories: React.FC = () => {
         />
       </div>
 
+      <div className="nutrition-controls">
+        <button 
+          className="control-button"
+          onClick={() => setShowMacroSettings(true)}
+        >
+          Macro Settings
+        </button>
+        <button 
+          className="control-button"
+          onClick={() => setShowDetailedView(true)}
+        >
+          Detailed View
+        </button>
+      </div>
+
       <DailySummary 
         dailyTotals={dailyTotals} 
-        macroPercentages={macroPercentages} 
+        macroPercentages={macroPercentages}
+        nutritionGoals={nutritionGoals || undefined}
       />
 
       <FoodSearch 
@@ -137,6 +219,70 @@ const AddCalories: React.FC = () => {
             handleAddCustomFood(customFood, servings, mealType)
           }
         />
+      )}
+
+      {/* Macro Settings Modal */}
+      {showMacroSettings && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Macro Distribution Settings</h3>
+              <button onClick={() => setShowMacroSettings(false)}>×</button>
+            </div>
+            <MacroPresetSelector
+              selectedPreset={selectedMacroPreset}
+              onPresetChange={handleMacroPresetChange}
+              customRatios={customMacroRatios}
+              onCustomRatiosChange={handleCustomRatiosChange}
+            />
+            <div className="modal-actions">
+              <button 
+                className="save-button"
+                onClick={() => setShowMacroSettings(false)}
+              >
+                Save Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detailed Nutrition Modal */}
+      {showDetailedView && (
+        <div className="modal-overlay">
+          <div className="modal-content detailed-modal">
+            <div className="modal-header">
+              <h3>Detailed Nutrition</h3>
+              <button onClick={() => setShowDetailedView(false)}>×</button>
+            </div>
+            <DetailedNutritionView
+              nutrition={{
+                ...dailyTotals,
+                fiber: 0,
+                sugar: 0,
+                sodium: 0,
+                saturatedFat: 0,
+                cholesterol: 0,
+                potassium: 0,
+                vitaminC: 0,
+                calcium: 0,
+                iron: 0
+              }}
+              goals={nutritionGoals ? {
+                ...nutritionGoals,
+                fiber: 25,
+                sugar: 50,
+                sodium: 2300,
+                saturatedFat: 20,
+                cholesterol: 300,
+                potassium: 3500,
+                vitaminC: 90,
+                calcium: 1000,
+                iron: 18
+              } : undefined}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
