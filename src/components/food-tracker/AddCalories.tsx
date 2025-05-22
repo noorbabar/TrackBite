@@ -10,7 +10,7 @@ import MacroPresetSelector from './MacroPresetSelector';
 import DetailedNutritionView from './DetailedNutritionView';
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { fetchUserProfile } from '../../services/api';
-import { MACRO_PRESETS } from './MacroPresets';
+import { MACRO_PRESETS } from './MacroPresetSelector';
 
 const AddCalories: React.FC = () => {
   const [nutritionGoals, setNutritionGoals] = useState<{ calories: number; protein: number; carbs: number; fat: number } | null>(null);
