@@ -1,5 +1,5 @@
 import React from 'react';
-import { MacroPresetType } from './types';
+import { MacroPresetType, MacroPreset } from './types';
 import { MACRO_PRESETS } from './MacroPresets';
 
 interface MacroPresetSelectorProps {
@@ -15,12 +15,15 @@ const MacroPresetSelector: React.FC<MacroPresetSelectorProps> = ({
   customRatios,
   onCustomRatiosChange
 }) => {
+  // Cast MACRO_PRESETS to Record<string, MacroPreset> so preset type is known
+  const presets = MACRO_PRESETS as Record<string, MacroPreset>;
+
   return (
     <div className="macro-preset-selector">
       <h3>Macro Distribution</h3>
       
       <div className="preset-grid">
-        {Object.entries(MACRO_PRESETS).map(([key, preset]) => (
+        {Object.entries(presets).map(([key, preset]) => (
           <div 
             key={key}
             className={`preset-card ${selectedPreset === key ? 'selected' : ''}`}
@@ -53,8 +56,8 @@ const MacroPresetSelector: React.FC<MacroPresetSelectorProps> = ({
                     ...customRatios,
                     protein: parseInt(e.target.value) || 0
                   })}
-                  min="0"
-                  max="100"
+                  min={0}
+                  max={100}
                 />
               </div>
               <div className="input-group">
@@ -66,8 +69,8 @@ const MacroPresetSelector: React.FC<MacroPresetSelectorProps> = ({
                     ...customRatios,
                     carbs: parseInt(e.target.value) || 0
                   })}
-                  min="0"
-                  max="100"
+                  min={0}
+                  max={100}
                 />
               </div>
               <div className="input-group">
@@ -79,8 +82,8 @@ const MacroPresetSelector: React.FC<MacroPresetSelectorProps> = ({
                     ...customRatios,
                     fat: parseInt(e.target.value) || 0
                   })}
-                  min="0"
-                  max="100"
+                  min={0}
+                  max={100}
                 />
               </div>
             </div>
