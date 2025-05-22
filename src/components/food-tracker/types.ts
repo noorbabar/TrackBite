@@ -12,6 +12,13 @@ export interface Food {
   verified?: boolean;
 }
 
+export interface NutritionGoals {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
 export interface CustomFood {
   name: string;
   calories: number;
@@ -113,3 +120,36 @@ export interface MealPlanItem {
   carbs: number;
   fat: number;
 }
+
+export interface DetailedNutrition {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber: number;
+  sugar: number;
+  sodium: number;
+  saturatedFat: number;
+  cholesterol: number;
+  potassium: number;
+  vitaminC: number;
+  calcium: number;
+  iron: number;
+}
+
+export interface MacroRatio {
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
+export interface MacroPreset {
+  name: string;
+  description: string;
+  ratios: MacroRatio;
+}
+
+export interface DetailedNutritionGoals extends DetailedNutrition {
+}
+
+export type MacroPresetType = 'balanced' | 'low-carb' | 'keto' | 'high-protein' | 'mediterranean' | 'custom';
