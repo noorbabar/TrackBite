@@ -6,6 +6,11 @@ export interface Food {
   protein: number;
   carbs: number;
   fat: number;
+  fiber: number;
+  sugar: number;
+  sodium: number;
+  calcium: number;
+  iron: number;
   servingSize: string;
   brand?: string;
   category?: string;
@@ -25,6 +30,11 @@ export interface CustomFood {
   protein: number;
   carbs: number;
   fat: number;
+  fiber: number;
+  sugar: number;
+  sodium: number;
+  calcium: number;
+  iron: number;
   servingSize: string;
   brand?: string;
   category?: string;

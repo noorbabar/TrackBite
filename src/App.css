@@ -362,11 +362,11 @@ nav button.active {
 
 /* Quote of the day styling */
 .quote-container {
-  background: linear-gradient(to right, #527758, #181919);
+  background: linear-gradient(to right, #ddeee6, #e3f2ee);
   border-radius: 8px;
   padding: 16px 20px;
   margin-bottom: 24px;
-  color: white;
+  color: rgb(121, 119, 119);
   position: relative;
   box-shadow: 0 4px 10px rgba(74, 209, 169, 0.15);
 }
@@ -777,20 +777,6 @@ nav button.active {
   color: #999;
 }
 
-/* Meal Tracking */
-.meal-tracker {
-  margin-bottom: 20px;
-}
-
-.meal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #f5f7fa;
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
 
 .tracker-header {
   background-color: #ffffff;
@@ -801,12 +787,6 @@ nav button.active {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-
-.meal-title {
-  font-weight: 500;
-  color: #444;
 }
 
 .meal-calories {
@@ -829,24 +809,90 @@ nav button.active {
   background-color: #005bb5;
 }
 
-.meal-items {
-  background-color: white;
-  border: 1px solid #e5e7eb;
+/* Container spacing so it's not flush against the screen edges */
+.food-log-section {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.food-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.food-log-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.total-logged {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Meal Section */
+.meal-section {
+  margin-bottom: 20px;
+  border: 1px solid #eee;
   border-radius: 6px;
   overflow: hidden;
+  background-color: #fff;
+}
+
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f4f8;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.meal-title-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.meal-title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.meal-entry-count {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.meal-calories {
+  font-weight: bold;
+  color: #333;
+}
+
+.expand-icon {
+  margin-left: 8px;
+  font-size: 0.9rem;
+}
+
+/* Entry Items */
+.meal-items {
+  padding: 12px 16px;
 }
 
 .meal-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  border-bottom: 1px solid #edf2f7;
-  transition: background-color 0.2s;
-}
-
-.meal-item:hover {
-  background-color: #f9fafb;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 
 .meal-item:last-child {
@@ -858,32 +904,68 @@ nav button.active {
 }
 
 .meal-item-name {
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.meal-item-serving {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  color: #888;
 }
 
 .meal-item-macros {
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 4px;
+}
+
+.meal-item-macros .macro {
+  margin-right: 8px;
+}
+
+.meal-item-actions {
+  text-align: right;
+  min-width: 100px;
 }
 
 .meal-item-calories {
-  font-weight: 500;
-  color: #4b5563;
-  margin-right: 12px;
-  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
 }
 
+/* Buttons */
+.edit-button,
 .delete-button {
-  color: #ef4444;
-  font-size: 18px;
-  font-weight: bold;
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.2s;
-  padding: 4px;
+  font-size: 1rem;
+  margin-left: 6px;
+}
+
+.edit-button:hover {
+  color: #007bff;
+}
+
+.delete-button:hover {
+  color: #dc3545;
+}
+
+/* Empty log */
+.empty-log {
+  text-align: center;
+  padding: 40px 20px;
+  color: #777;
+}
+
+.no-foods-message {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.empty-log-suggestion {
+  font-size: 0.9rem;
 }
 
 .delete-button:hover {
@@ -911,6 +993,14 @@ nav button.active {
 .search-container {
   display: flex;
   gap: 8px;
+  align-items: center;
+}
+
+.search-wrapper {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
 .search-input {
@@ -958,15 +1048,18 @@ nav button.active {
 
 /* Search results styles */
 .search-results {
+  position: absolute;
+  top: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px;
   background-color: white;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   max-height: 280px;
   overflow-y: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  left: 0;
-  right: 0;
   z-index: 100;
 }
 
@@ -1137,11 +1230,19 @@ nav button.active {
   background-color: #b7f0e1;
 }
 
+.page-center-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
 /* Summary card styles */
 .summary-card {
+  max-width: 900px 900px;
+  width: 100%;
   background: linear-gradient(135deg, #e2f5e4 0%, #e6f5fe 100%);
   border-radius: 8px;
-  padding: 16px;
+  padding: 24px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   border: 1px solid #d6fadd;
@@ -1151,7 +1252,8 @@ nav button.active {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 12px;
-  color: hsl(312, 100%, 1%);
+  color: hsl(312, 100%, 10%);
+  text-align: center;
 }
 
 .summary-stats {

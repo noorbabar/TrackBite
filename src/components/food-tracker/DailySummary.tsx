@@ -23,6 +23,7 @@ const DailySummary: React.FC<DailySummaryProps> = ({
     : null;
 
   return (
+    <div className="page-center-wrapper">
     <div className="summary-card">
       <h2 className="summary-title">Daily Summary</h2>
       
@@ -120,6 +121,7 @@ const DailySummary: React.FC<DailySummaryProps> = ({
           </button>
         </div>
       )}
+    </div>
     </div>
   );
 };

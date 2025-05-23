@@ -29,6 +29,11 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
     protein: 0,
     carbs: 0,
     fat: 0,
+    fiber: 0,
+    sugar: 0,
+    sodium: 0,
+    calcium: 0,
+    iron: 0,
     servingSize: '100g'
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -64,7 +69,12 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
     if (customFood.fat < 0) {
       newErrors.fat = 'Fat cannot be negative';
     }
-    
+    if (customFood.fiber < 0) newErrors.fiber = 'Fiber cannot be negative';
+    if (customFood.sugar < 0) newErrors.sugar = 'Sugar cannot be negative';
+    if (customFood.sodium < 0) newErrors.sodium = 'Sodium cannot be negative';
+    if (customFood.calcium < 0) newErrors.calcium = 'Calcium cannot be negative';
+    if (customFood.iron < 0) newErrors.iron = 'Iron cannot be negative';
+
     if (!customFood.servingSize.trim()) {
       newErrors.servingSize = 'Serving size is required';
     }
@@ -89,6 +99,11 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
         protein: 0,
         carbs: 0,
         fat: 0,
+        fiber: 0,
+        sugar: 0,
+        sodium: 0,
+        calcium: 0,
+        iron: 0,
         servingSize: 'serving'
       };
       
@@ -123,7 +138,12 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
       calories: selectedFood.calories * servings,
       protein: selectedFood.protein * servings,
       carbs: selectedFood.carbs * servings,
-      fat: selectedFood.fat * servings
+      fat: selectedFood.fat * servings,
+      fiber: selectedFood.fiber * servings,
+      sugar: selectedFood.sugar * servings,
+      sodium: selectedFood.sodium * servings,
+      calcium: selectedFood.calcium * servings,
+      iron: selectedFood.iron * servings,
     };
   };
 
@@ -157,7 +177,12 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
                   <p>Protein: {totalNutrition.protein.toFixed(1)}g</p>
                   <p>Carbs: {totalNutrition.carbs.toFixed(1)}g</p>
                   <p>Fat: {totalNutrition.fat.toFixed(1)}g</p>
-                </div>
+                  <p>Fiber: {totalNutrition.fiber.toFixed(1)}g</p>
+                  <p>Sugar: {totalNutrition.sugar.toFixed(1)}g</p>
+                  <p>Sodium: {totalNutrition.sodium.toFixed(0)}mg</p>
+                  <p>Calcium: {totalNutrition.calcium.toFixed(0)}mg</p>
+                  <p>Iron: {totalNutrition.iron.toFixed(1)}mg</p>
+                  </div>
               </div>
             )}
           </div>
@@ -272,6 +297,74 @@ const AddFoodModal: React.FC<AddFoodModalProps> = ({
                       />
                       {errors.fat && <span className="error-message">{errors.fat}</span>}
                     </div>
+                    <div className="form-row">
+  <div className="form-group">
+    <label>Fiber (g)</label>
+    <input
+      type="number"
+      value={customFood.fiber || ''}
+      onChange={(e) => setCustomFood({...customFood, fiber: Number(e.target.value)})}
+      min="0"
+      step="0.1"
+      className={errors.fiber ? 'error' : ''}
+    />
+    {errors.fiber && <span className="error-message">{errors.fiber}</span>}
+  </div>
+
+  <div className="form-group">
+    <label>Sugar (g)</label>
+    <input
+      type="number"
+      value={customFood.sugar || ''}
+      onChange={(e) => setCustomFood({...customFood, sugar: Number(e.target.value)})}
+      min="0"
+      step="0.1"
+      className={errors.sugar ? 'error' : ''}
+    />
+    {errors.sugar && <span className="error-message">{errors.sugar}</span>}
+  </div>
+
+  <div className="form-group">
+    <label>Sodium (mg)</label>
+    <input
+      type="number"
+      value={customFood.sodium || ''}
+      onChange={(e) => setCustomFood({...customFood, sodium: Number(e.target.value)})}
+      min="0"
+      step="1"
+      className={errors.sodium ? 'error' : ''}
+    />
+    {errors.sodium && <span className="error-message">{errors.sodium}</span>}
+  </div>
+</div>
+
+<div className="form-row">
+  <div className="form-group">
+    <label>Calcium (mg)</label>
+    <input
+      type="number"
+      value={customFood.calcium || ''}
+      onChange={(e) => setCustomFood({...customFood, calcium: Number(e.target.value)})}
+      min="0"
+      step="1"
+      className={errors.calcium ? 'error' : ''}
+    />
+    {errors.calcium && <span className="error-message">{errors.calcium}</span>}
+  </div>
+
+  <div className="form-group">
+    <label>Iron (mg)</label>
+    <input
+      type="number"
+      value={customFood.iron || ''}
+      onChange={(e) => setCustomFood({...customFood, iron: Number(e.target.value)})}
+      min="0"
+      step="0.1"
+      className={errors.iron ? 'error' : ''}
+    />
+    {errors.iron && <span className="error-message">{errors.iron}</span>}
+  </div>
+</div>
                   </div>
                 </>
               )}

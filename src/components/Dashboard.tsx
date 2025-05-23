@@ -270,7 +270,7 @@ const Dashboard = () => {
             </button>
             
             {profileData?.stats?.weight && (
-              <button className="dash-button-secondary">
+              <button className="dash-button">
                 Log Today's Activity
               </button>
             )}

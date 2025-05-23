@@ -80,6 +80,7 @@ const FoodSearch: React.FC<FoodSearchProps> = ({
 
   return (
     <div className="search-section">
+        <div className="search-wrapper">
       <h2 className="section-title">Add Food</h2>
       <div className="search-container">
         <div className="search-input-wrapper">
@@ -178,11 +179,13 @@ const FoodSearch: React.FC<FoodSearchProps> = ({
                     <span className="food-calories">{food.calories} cal</span>
                   </div>
                 </div>
+                
               ))}
             </div>
           )}
         </div>
       )}
+    </div>
     </div>
   );
 };
