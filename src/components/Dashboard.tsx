@@ -62,9 +62,9 @@ const Dashboard = () => {
     return (
       <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem' }}>
         <div className="card" style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>Welcome to ProgressPlate</h1>
+          <h1 style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>Welcome to TrackBite</h1>
           <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1.5rem', lineHeight: '1.6' }}>
-            Set up your profile to get personalized macro targets and meal plans
+            Set up your profile to get personalised macro targets and meal plans
           </p>
           <button className="btn-primary" onClick={() => setIsModalOpen(true)}>Set Up Profile</button>
         </div>
@@ -77,7 +77,6 @@ const Dashboard = () => {
   const weight = profileData.stats.weight || 70;
   const goal = profileData.stats.goalCategory || 'maintenance';
   
-  // Calculate macros based on goal
   let protein = 0;
   let carbs = 0;
   let fat = 0;
