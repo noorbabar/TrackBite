@@ -1,4 +1,5 @@
 import { useState, FormEvent, useEffect } from 'react';
+import './ProfileSetup.css';
 
 type UserStats = {
   weight: number | null;
@@ -74,7 +75,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
         ? 10 * weightInKg + 6.25 * heightInCm - 5 * ageInYears + 5
         : 10 * weightInKg + 6.25 * heightInCm - 5 * ageInYears - 161;
 
-    // Activity multipliers based on scientific consensus
     const activityMultipliers: Record<string, number> = {
       Sedentary: 1.2,
       'Lightly Active': 1.375,
@@ -84,14 +84,13 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
 
     const tdee = bmr * activityMultipliers[activityLevel];
 
-    // Calorie adjustments (deficit or surplus) per week mapped to daily values
     const calorieAdjustments = {
       mild: 250,
       moderate: 500,
       extreme: 1000,
     };
 
-    // Prevent calorie intake below minimum healthy thresholds
+    // Prevent cal intake below minimum healthy thresholds
     const minCalories = gender === 'female' ? 1200 : 1500;
 
     let calculatedCalories = tdee;
@@ -112,7 +111,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
       const surplus = calorieAdjustments[goalRate];
       calculatedCalories = tdee + surplus;
 
-      // Calculate weeks needed for goal weight gain
       const totalGainKg = goalWeightInKg - weightInKg;
       if (totalGainKg > 0) {
         estimatedDurationWeeks = Math.ceil((totalGainKg * 7700) / (surplus * 7));
@@ -132,7 +130,6 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
     setSelectedCalories(calculatedCalories);
     setDuration(estimatedDurationWeeks);
 
-    // Warn if calories are below recommended minimum for long-term health
     if (calculatedCalories < minCalories) {
       setCaloriesTooLowWarning(
         `Warning: Recommended calorie intake (${calculatedCalories.toFixed(

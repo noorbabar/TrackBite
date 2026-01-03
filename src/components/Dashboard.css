@@ -1,0 +1,374 @@
+.loading-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  font-size: 1.125rem;
+  color: var(--gray-600);
+}
+
+.welcome-screen {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.welcome-hero {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+}
+
+.welcome-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.welcome-subtitle {
+  font-size: 1.25rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.welcome-content {
+  margin-top: 2rem;
+}
+
+.welcome-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.welcome-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.welcome-section p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--gray-700);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--primary-green);
+  position: relative;
+}
+
+.feature-card.optional-card {
+  border-color: var(--gray-300);
+  border-style: dashed;
+}
+
+.feature-number {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-green);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.optional-card .feature-number {
+  background: var(--gray-400);
+}
+
+.feature-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+  color: var(--dark-text);
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+.cta-section {
+  text-align: center;
+  padding: 2rem;
+  background: var(--gray-50);
+  border-radius: 12px;
+}
+
+.btn-large {
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+}
+
+.cta-note {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: var(--gray-600);
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-header p {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+}
+
+.targets-section {
+  margin-bottom: 3rem;
+}
+
+.targets-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--dark-text);
+}
+
+.targets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.target-card {
+  background: white;
+  padding: 1.75rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid;
+  transition: transform 0.2s;
+}
+
+.target-card:hover {
+  transform: translateY(-4px);
+}
+
+.target-card.calories {
+  border-color: var(--green-accent);
+  background: linear-gradient(135deg, var(--mint-bg) 0%, var(--white) 100%);
+}
+
+.target-card.protein {
+  border-color: var(--green-accent);
+  background: linear-gradient(135deg, var(--mint-bg) 0%, var(--white) 100%);
+}
+
+.target-card.carbs {
+  border-color: var(--green-accent);
+  background: linear-gradient(135deg, var(--peach-footer) 0%, var(--white) 100%);
+}
+
+.target-card.fat {
+  border-color: var(--dark-text);
+  background: linear-gradient(135deg, var(--peach-footer) 0%, var(--white) 100%);
+}
+
+.target-value {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--dark-text);
+}
+
+.target-label {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  color: var(--gray-700);
+}
+
+.target-note {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.next-steps-section {
+  margin-bottom: 3rem;
+}
+
+.next-steps-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--dark-text);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.step-card {
+  background: white;
+  padding: 1.75rem;
+  border-radius: 12px;
+  border: 2px solid var(--primary-green);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(129, 199, 132, 0.2);
+  border-color: var(--dark-green);
+}
+
+.step-card.optional-step {
+  border-color: var(--gray-300);
+  border-style: dashed;
+}
+
+.step-card.optional-step:hover {
+  border-color: var(--gray-400);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.step-header {
+  margin-bottom: 1rem;
+}
+
+.step-badge {
+  display: inline-block;
+  background: var(--primary-green);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.optional-step .step-badge {
+  background: var(--gray-400);
+}
+
+.step-card h3 {
+  font-size: 1.125rem;
+  color: var(--dark-text);
+  margin: 0;
+}
+
+.step-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin: 0 0 1rem 0;
+}
+
+.step-action {
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.optional-step .step-action {
+  color: var(--gray-600);
+}
+
+.profile-summary {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.profile-summary h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: var(--dark-text);
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--gray-50);
+  border-radius: 8px;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+}
+
+.stat-value {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--dark-text);
+}
+
+@media (max-width: 768px) {
+  .welcome-hero h1 {
+    font-size: 2rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .targets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dashboard-header button {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .targets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .target-value {
+    font-size: 1.875rem;
+  }
+}

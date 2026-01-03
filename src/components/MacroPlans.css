@@ -1,0 +1,359 @@
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  font-size: 1.125rem;
+  color: var(--dark-text);
+}
+
+.no-profile-card {
+  background: var(--white);
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 600px;
+  margin: 2rem auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.no-profile-card h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.no-profile-card p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--dark-text);
+  opacity: 0.7;
+}
+
+.questionnaire-container {
+  background: var(--white);
+  padding: 3rem;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: 2rem auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--mint-bg);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--green-accent);
+  transition: width 0.3s ease;
+}
+
+.question-header {
+  margin-bottom: 2rem;
+}
+
+.question-number {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--green-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.question-header h2 {
+  font-size: 1.5rem;
+  color: var(--dark-text);
+  line-height: 1.4;
+}
+
+.options-container {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.option-btn {
+  background: var(--white);
+  border: 2px solid var(--border-gray);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--dark-text);
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.option-btn:hover {
+  border-color: var(--green-accent);
+  background: var(--mint-bg);
+}
+
+.option-btn.selected {
+  border-color: var(--green-accent);
+  background: var(--green-accent);
+  color: var(--white);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.nav-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.results-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.results-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark-text);
+}
+
+.results-header p {
+  font-size: 1.125rem;
+  color: var(--dark-text);
+  opacity: 0.7;
+  margin-bottom: 1.5rem;
+}
+
+.daily-overview {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.daily-overview h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.meal-count {
+  font-size: 1.125rem;
+  color: var(--green-accent);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.macros-per-meal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.macro-box {
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid;
+}
+
+.macro-box.protein {
+  border-color: var(--green-accent);
+  background: var(--mint-bg);
+}
+
+.macro-box.carbs {
+  border-color: var(--green-accent);
+  background: var(--mint-bg);
+}
+
+.macro-box.fat {
+  border-color: var(--green-accent);
+  background: var(--mint-bg);
+}
+
+.macro-box.calories {
+  border-color: var(--dark-text);
+  background: var(--white);
+}
+
+.macro-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--dark-text);
+  margin-bottom: 0.25rem;
+}
+
+.macro-label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--dark-text);
+  opacity: 0.7;
+}
+
+.meal-structure-section {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.meal-structure-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--dark-text);
+}
+
+.meal-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.meal-time {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--mint-bg);
+  border-radius: 8px;
+}
+
+.meal-number {
+  width: 40px;
+  height: 40px;
+  background: var(--green-accent);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+
+.meal-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--dark-text);
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.rec-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--green-accent);
+}
+
+.rec-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark-text);
+}
+
+.rec-note {
+  font-size: 0.875rem;
+  color: var(--dark-text);
+  opacity: 0.7;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.rec-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.rec-card ul li {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: var(--mint-bg);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--dark-text);
+}
+
+.rec-card ul li:last-child {
+  margin-bottom: 0;
+}
+
+.final-tips {
+  background: var(--peach-footer);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--dark-text);
+}
+
+.final-tips h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.final-tips ol {
+  margin-left: 1.5rem;
+  line-height: 1.8;
+  color: var(--dark-text);
+}
+
+.final-tips ol li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.final-tips ol li strong {
+  color: var(--dark-text);
+}
+
+@media (max-width: 768px) {
+  .questionnaire-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .results-header h1 {
+    font-size: 2rem;
+  }
+
+  .macros-per-meal {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .macros-per-meal {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+  }
+
+  .nav-buttons button {
+    width: 100%;
+  }
+}
