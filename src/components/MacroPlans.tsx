@@ -38,7 +38,6 @@ const MacroPlans = () => {
   const [savedMeals, setSavedMeals] = useState<SavedMeal[]>([]);
   const [mealName, setMealName] = useState('');
   const [activeTab, setActiveTab] = useState('protein');
-  const [selectedStore, setSelectedStore] = useState('all');
   const [editingForm, setEditingForm] = useState(false);
   const [matchedRecipes, setMatchedRecipes] = useState<any[]>([]);
   const [showTrackingInfo, setShowTrackingInfo] = useState(false);
@@ -71,9 +70,8 @@ const MacroPlans = () => {
         
         if (profile?.stats?.recommendedCalories) {
           const totalCals = profile.stats.recommendedCalories;
-          const userWeight = profile.stats.weight || 70; // Use actual weight or default to 70kg
+          const userWeight = profile.stats.weight || 70;
           
-          // Check if form already filled
           const storedAnswers = localStorage.getItem('macroFormAnswers');
           if (storedAnswers) {
             const parsed = JSON.parse(storedAnswers);
@@ -106,7 +104,6 @@ const MacroPlans = () => {
     loadUserMacros();
   }, [isLoaded, user, getToken]);
 
-  // Verified nutritional data from Coles/Woolworths/ALDI/Costco
   const foodDatabase: { [key: string]: Food[] } = {
     protein: [
       { id: 'chicken-breast', name: 'Chicken Breast (skinless)', brand: 'RSPCA Approved', store: ['Coles', 'Woolworths'], serving: 100, unit: 'g', p: 31, c: 0, f: 3.6, fiber: 0, sugar: 0 },
@@ -196,7 +193,6 @@ const MacroPlans = () => {
     ]
   };
 
-  // Recipe database with instructions
   const recipes = [
     {
       id: 'chicken-rice-bowl',
@@ -323,16 +319,13 @@ const MacroPlans = () => {
     switch(goal) {
       case 'muscle':
       case 'fat-loss': {
-        // 2g protein per kg body weight for muscle gain and fat loss
         const proteinGrams = userWeight * 2;
         const proteinCals = proteinGrams * 4;
         const remainingCals = cals - proteinCals;
         
-        // Minimum fat for hormones: 0.8g per kg (20-25% of remaining calories)
         const fatGrams = Math.max(userWeight * 0.8, (remainingCals * 0.25) / 9);
         const fatCals = fatGrams * 9;
         
-        // Rest goes to carbs (for energy and performance)
         const carbCals = Math.max(0, cals - proteinCals - fatCals);
         const carbGrams = carbCals / 4;
         
@@ -344,14 +337,12 @@ const MacroPlans = () => {
         };
       }
       case 'performance': {
-        // Higher carbs for performance
         const proteinGrams = (cals * 0.25) / 4;
         const carbGrams = (cals * 0.55) / 4;
         const fatGrams = (cals * 0.20) / 9;
         return { calories: cals, protein: proteinGrams, carbs: carbGrams, fat: fatGrams };
       }
       default: {
-        // Maintenance: ~1g protein per 10 cals (40% protein)
         const proteinCals = cals * 0.4;
         const proteinGrams = proteinCals / 4;
         const remainingCals = cals - proteinCals;
@@ -487,32 +478,24 @@ const MacroPlans = () => {
     
     let filtered = foodDatabase[category];
     
-    // Filter by store
     if (!stores.includes('all')) {
       filtered = filtered.filter(food => 
         food.store.some((s: string) => stores.map((st: string) => st.toLowerCase()).includes(s.toLowerCase()))
       );
     }
     
-    // Filter for halal - only show halal-certified options
     if (isHalal) {
       filtered = filtered.filter(food => {
-        // Halal meats
         if (['beef-mince', 'chicken-halal'].includes(food.id)) return true;
         
-        // Exclude non-halal meats
         if (['beef-lean', 'chicken-breast'].includes(food.id)) return false;
         
-        // All seafood is halal
         if (['barramundi', 'salmon', 'prawns', 'tuna-can'].includes(food.id)) return true;
         
-        // Vegetarian/vegan items are halal
         if (['tofu-firm', 'tempeh', 'beans-black', 'chickpeas', 'lentils', 'eggs', 'egg-whites'].includes(food.id)) return true;
         
-        // All plant-based foods are halal
         if (category === 'carbs' || category === 'vegetables' || category === 'extras') return true;
         
-        // Dairy and protein powders (check for halal certification)
         if (['greek-yogurt', 'yopro', 'cottage-cheese', 'protein-powder'].includes(food.id)) return true;
         
         return true;
@@ -643,7 +626,7 @@ const MacroPlans = () => {
           <div>
             <div className="card" style={{ marginBottom: '1rem', background: '#e8f5e9' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <h3 style={{ fontSize: '0.9375rem', margin: 0 }}>NOTE: About Tracking</h3>
+                <h3 style={{ fontSize: '0.9375rem', margin: 0 }}>💡 About Tracking</h3>
                 <button onClick={() => setShowTrackingInfo(!showTrackingInfo)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', color: '#81c784' }}>
                   {showTrackingInfo ? 'Hide' : 'Show'}
                 </button>
@@ -651,7 +634,7 @@ const MacroPlans = () => {
               {showTrackingInfo && (
                 <div style={{ fontSize: '0.8125rem', lineHeight: '1.6', color: '#2d3436' }}>
                   <p style={{ marginBottom: '0.75rem' }}>These macros help you get started and find meal ideas. Use them as a rough guide.</p>
-                  <p style={{ marginBottom: '0.75rem' }}><strong>You don't HAVE to count every calorie, but it does help if you have a specific goal (fat loss /muscle gain).</strong> Focus on hitting protein targets and eating whole foods.</p>
+                  <p style={{ marginBottom: '0.75rem' }}><strong>You don't need to count every calorie.</strong> Focus on hitting protein targets and eating whole foods.</p>
                   <p style={{ marginBottom: '0.75rem' }}>If you want to track precisely, try <strong>MyFitnessPal</strong> - it's free and has a huge food database.</p>
                   <p style={{ marginBottom: 0 }}>Most people find success by: eating similar meals daily, hitting protein goals, and adjusting based on how they feel and perform.</p>
                 </div>
