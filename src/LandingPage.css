@@ -1,0 +1,327 @@
+:root {
+  --mint-bg: #e8f5e9;
+  --peach-footer: #fce4d6;
+  --dark-text: #2d3436;
+  --green-accent: #81c784;
+  --white: #ffffff;
+}
+
+.landing-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--mint-bg);
+  z-index: 9999;
+}
+
+.landing-wrapper * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.landing-wrapper ~ header,
+.landing-wrapper ~ .app-header {
+  display: none !important;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--mint-bg);
+  color: var(--dark-text);
+}
+
+.landing-wrapper .top-nav {
+  background-color: var(--white);
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 100;
+}
+
+.landing-wrapper .logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.landing-wrapper .nav-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.landing-wrapper .nav-links {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.landing-wrapper .nav-links a {
+  text-decoration: none;
+  color: var(--dark-text);
+  font-size: 1.05rem;
+  font-weight: 400;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.landing-wrapper .nav-links a:hover {
+  color: var(--green-accent);
+}
+
+.landing-wrapper .hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.landing-wrapper .hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--dark-text);
+  border-radius: 2px;
+}
+
+.landing-wrapper .landing-page {
+  height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: var(--mint-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-wrapper .hero-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 0.5rem;
+}
+
+.landing-wrapper .hero-icon-container {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border-radius: 20px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.landing-wrapper .hero-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.landing-wrapper .tagline {
+  font-family: 'Brush Script MT', cursive, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--dark-text);
+  font-weight: 400;
+}
+
+.landing-wrapper .auth-card {
+  background-color: var(--white);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  width: 100%;
+}
+
+.landing-wrapper .auth-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  color: var(--dark-text);
+}
+
+.landing-wrapper .auth-card .terms {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #666;
+  margin-bottom: 1.25rem;
+}
+
+.landing-wrapper .signup-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: var(--dark-text);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1.25rem;
+  transition: opacity 0.2s;
+}
+
+.landing-wrapper .signup-btn:hover {
+  opacity: 0.9;
+}
+
+.landing-wrapper .divider-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.landing-wrapper .divider-line {
+  flex: 1;
+  height: 3px;
+  background-color: #ddd;
+}
+
+.landing-wrapper .divider-text {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 1000;
+}
+
+.landing-wrapper .login-prompt {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--dark-text);
+  margin-bottom: 0.75rem;
+  font-weight: 900;
+}
+
+.landing-wrapper .login-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: transparent;
+  color: var(--dark-text);
+  border: 2px solid var(--dark-text);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.landing-wrapper .login-btn:hover {
+  background-color: var(--dark-text);
+  color: var(--white);
+}
+
+.landing-wrapper .left-illustration {
+  position: absolute;
+  bottom: 3rem;
+  left: 0.3rem;
+  width: 260px;
+  height: 220px;
+}
+
+.landing-wrapper .illustration-cards {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.landing-wrapper .card-icon {
+  position: absolute;
+  width: 290px;
+  height: 280px;
+  background-color: transparent;
+  border-radius: 16px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.landing-wrapper .card-icon:first-child {
+  transform: rotate(-15deg);
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.landing-wrapper .card-icon:last-child {
+  transform: rotate(15deg);
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.landing-wrapper .illustration-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.landing-wrapper .landing-footer {
+  background-color: #fff8f8;
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.landing-wrapper .landing-footer p {
+  color: #534b46;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .landing-wrapper .nav-links {
+    display: none;
+  }
+  
+  .landing-wrapper .hamburger {
+    display: flex;
+  }
+  
+  .landing-wrapper .tagline {
+    font-size: 1.75rem;
+  }
+  
+  .landing-wrapper .auth-card {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+  
+  .landing-wrapper .left-illustration {
+    display: none;
+  }
+
+  .landing-wrapper .landing-page {
+    padding: 1rem;
+  }
+}
