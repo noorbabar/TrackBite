@@ -1,34 +1,80 @@
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
-import { useAuth } from '@clerk/clerk-react';  
+import { useAuth, useUser } from '@clerk/clerk-react';  
 import UserProfile from './components/UserProfile';
-import AddCalories from './components/food-tracker/AddCalories';
 import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
 import Learn from './components/Learn';
-import { Logout } from './components/Logout'; 
+import MacroPlans from './components/MacroPlans';
+import CycleSync from './components/CycleSync';
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const auth = useAuth(); 
+  const { user } = useUser();
   const isAuthenticated = auth.isSignedIn; 
 
-  const handleNavigate = (path: string) => {
-    navigate(path);
+  if (!isAuthenticated && location.pathname === '/') {
+    return null;
+  }
+
+  if (location.pathname === '/landing' || location.pathname === '/sign-up' || location.pathname === '/sign-in') {
+    return null;
+  }
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    navigate('/');
   };
 
   return (
-       <header className="flex items-center p-4 bg-white shadow-md">
-       <img src="/TrackBiteLogo.png" alt="TrackBite Logo" className="w-16 h-16 object-contain mr-3" />      
-      <nav>
-        <button onClick={() => handleNavigate('/')}>Dashboard</button>
-        <button onClick={() => handleNavigate('/add-calories')}>Meal Log</button>
-        <button onClick={() => handleNavigate('/progress')}>Progress</button>
-        <button onClick={() => handleNavigate('/learn')}>TrackLearn</button>
+    <header className="app-header">
+      <div className="header-left">
+        <img src="/TrackBiteLogo.png" alt="ProgressPlate" className="header-logo" />
+        <span className="welcome-text">
+          Welcome, {user?.firstName || 'User'}!
+        </span>
+      </div>
+      
+      <nav className="header-nav">
+        <button 
+          onClick={() => navigate('/')} 
+          className={isActive('/') ? 'nav-btn active' : 'nav-btn'}
+        >
+          Dashboard
+        </button>
+        <button 
+          onClick={() => navigate('/macro-plans')} 
+          className={isActive('/macro-plans') ? 'nav-btn active' : 'nav-btn'}
+        >
+          Macro Plans
+        </button>
+        <button 
+          onClick={() => navigate('/cycle-sync')} 
+          className={isActive('/cycle-sync') ? 'nav-btn active' : 'nav-btn'}
+        >
+          Cycle Sync
+        </button>
+        <button 
+          onClick={() => navigate('/learn')} 
+          className={isActive('/learn') ? 'nav-btn active' : 'nav-btn'}
+        >
+          Learn
+        </button>
       </nav>
-      {isAuthenticated && <Logout />}  {/* Show LogOut button only if authenticated */}
+
+      <div className="header-right">
+        {isAuthenticated && (
+          <button className="logout-btn" onClick={handleLogout}>
+            Log Out
+          </button>
+        )}
+      </div>
     </header>
   );
 }
@@ -39,25 +85,21 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div className="app-container">
         <Header />
-        {/* Display Welcome Message if user is authenticated */}
-        {isAuthenticated ? (
-          <h3></h3>
-        ) : (
-          <h3></h3>
-        )}
 
-        <Routes>
-          <Route path="/" element={isAuthenticated ? <Dashboard /> : <Landing />} />
-          <Route path="/add-calories" element={isAuthenticated ? <AddCalories /> : <Landing />} />
-          <Route path="/user-profile" element={isAuthenticated ? <UserProfile /> : <Landing />} />
-          <Route path="/learn" element={isAuthenticated ? <Learn /> : <Learn />} />
-          <Route path="/landing" element={<Landing />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/add-calories" element={<AddCalories />} />
-        </Routes>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={isAuthenticated ? <Dashboard /> : <Landing />} />
+            <Route path="/macro-plans" element={isAuthenticated ? <MacroPlans /> : <Landing />} />
+            <Route path="/cycle-sync" element={isAuthenticated ? <CycleSync /> : <Landing />} />
+            <Route path="/user-profile" element={isAuthenticated ? <UserProfile /> : <Landing />} />
+            <Route path="/learn" element={<Learn />} />
+            <Route path="/landing" element={<Landing />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );
