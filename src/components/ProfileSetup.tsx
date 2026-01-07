@@ -185,6 +185,7 @@ const ProfileSetup = ({ closeModal, onSaveStats, initialStats }: ProfileSetupPro
   return (
     <div className="modal-overlay">
       <div className="modal-content">
+      <button className="modal-close" onClick={closeModal} aria-label="Close">×</button>
         {!isFormSubmitted ? (
           <>
             <h2>Profile Setup</h2>

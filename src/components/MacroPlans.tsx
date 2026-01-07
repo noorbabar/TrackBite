@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { fetchUserProfile } from '../services/api';
+import { preMadeMeals } from './Premademeals';
 
 interface Food {
   id: string;
@@ -41,6 +42,8 @@ const MacroPlans = () => {
   const [editingForm, setEditingForm] = useState(false);
   const [matchedRecipes, setMatchedRecipes] = useState<any[]>([]);
   const [showTrackingInfo, setShowTrackingInfo] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
+  const [showRecipeModal, setShowRecipeModal] = useState(false);
   
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
@@ -70,8 +73,9 @@ const MacroPlans = () => {
         
         if (profile?.stats?.recommendedCalories) {
           const totalCals = profile.stats.recommendedCalories;
-          const userWeight = profile.stats.weight || 70;
+          const userWeight = profile.stats.weight || 70; // Use actual weight or default to 70kg
           
+          // Check if form already filled
           const storedAnswers = localStorage.getItem('macroFormAnswers');
           if (storedAnswers) {
             const parsed = JSON.parse(storedAnswers);
@@ -104,6 +108,7 @@ const MacroPlans = () => {
     loadUserMacros();
   }, [isLoaded, user, getToken]);
 
+  // Verified nutritional data from Coles/Woolworths/ALDI/Costco
   const foodDatabase: { [key: string]: Food[] } = {
     protein: [
       { id: 'chicken-breast', name: 'Chicken Breast (skinless)', brand: 'RSPCA Approved', store: ['Coles', 'Woolworths'], serving: 100, unit: 'g', p: 31, c: 0, f: 3.6, fiber: 0, sugar: 0 },
@@ -193,6 +198,7 @@ const MacroPlans = () => {
     ]
   };
 
+  // Recipe database with instructions
   const recipes = [
     {
       id: 'chicken-rice-bowl',
@@ -319,13 +325,16 @@ const MacroPlans = () => {
     switch(goal) {
       case 'muscle':
       case 'fat-loss': {
+        // 2g protein per kg body weight for muscle gain and fat loss
         const proteinGrams = userWeight * 2;
         const proteinCals = proteinGrams * 4;
         const remainingCals = cals - proteinCals;
         
+        // Minimum fat for hormones: 0.8g per kg (20-25% of remaining calories)
         const fatGrams = Math.max(userWeight * 0.8, (remainingCals * 0.25) / 9);
         const fatCals = fatGrams * 9;
         
+        // Rest goes to carbs (for energy and performance)
         const carbCals = Math.max(0, cals - proteinCals - fatCals);
         const carbGrams = carbCals / 4;
         
@@ -337,12 +346,14 @@ const MacroPlans = () => {
         };
       }
       case 'performance': {
+        // Higher carbs for performance
         const proteinGrams = (cals * 0.25) / 4;
         const carbGrams = (cals * 0.55) / 4;
         const fatGrams = (cals * 0.20) / 9;
         return { calories: cals, protein: proteinGrams, carbs: carbGrams, fat: fatGrams };
       }
       default: {
+        // Maintenance: ~1g protein per 10 cals (40% protein)
         const proteinCals = cals * 0.4;
         const proteinGrams = proteinCals / 4;
         const remainingCals = cals - proteinCals;
@@ -471,6 +482,37 @@ const MacroPlans = () => {
     localStorage.setItem('savedMeals', JSON.stringify(updated));
   };
 
+  const loadPreMadeMeal = (meal: any) => {
+    // Clear current selection
+    setSelectedItems([]);
+    
+    // Add all ingredients from the pre-made meal
+    const newItems: SelectedFood[] = [];
+    meal.ingredients.forEach((ing: any) => {
+      const food = Object.values(foodDatabase).flat().find((f: any) => f.id === ing.id);
+      if (food) {
+        const amount = ing.amount;
+        const macros = {
+          p: (food.p * amount) / food.serving,
+          c: (food.c * amount) / food.serving,
+          f: (food.f * amount) / food.serving,
+          fiber: (food.fiber * amount) / food.serving,
+          sugar: (food.sugar * amount) / food.serving
+        };
+        newItems.push({ food, amount, macros });
+      }
+    });
+    
+    setSelectedItems(newItems);
+    setMealName(meal.name);
+    setActiveTab('protein'); // Switch back to ingredients view
+  };
+
+  const viewRecipe = (meal: any) => {
+    setSelectedRecipe(meal);
+    setShowRecipeModal(true);
+  };
+
   const getFilteredFoods = (category: string) => {
     const stores = answers.store || ['all'];
     const dietRestrictions = answers.diet || [];
@@ -478,24 +520,32 @@ const MacroPlans = () => {
     
     let filtered = foodDatabase[category];
     
+    // Filter by store
     if (!stores.includes('all')) {
       filtered = filtered.filter(food => 
         food.store.some((s: string) => stores.map((st: string) => st.toLowerCase()).includes(s.toLowerCase()))
       );
     }
     
+    // Filter for halal - only show halal-certified options
     if (isHalal) {
       filtered = filtered.filter(food => {
+        // Halal meats
         if (['beef-mince', 'chicken-halal'].includes(food.id)) return true;
         
+        // Exclude non-halal meats
         if (['beef-lean', 'chicken-breast'].includes(food.id)) return false;
         
+        // All seafood is halal
         if (['barramundi', 'salmon', 'prawns', 'tuna-can'].includes(food.id)) return true;
         
+        // Vegetarian/vegan items are halal
         if (['tofu-firm', 'tempeh', 'beans-black', 'chickpeas', 'lentils', 'eggs', 'egg-whites'].includes(food.id)) return true;
         
+        // All plant-based foods are halal
         if (category === 'carbs' || category === 'vegetables' || category === 'extras') return true;
         
+        // Dairy and protein powders (check for halal certification)
         if (['greek-yogurt', 'yopro', 'cottage-cheese', 'protein-powder'].includes(food.id)) return true;
         
         return true;
@@ -601,16 +651,126 @@ const MacroPlans = () => {
               )}
             </div>
 
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-              {['protein', 'carbs', 'fats', 'vegetables', 'extras'].map(tab => (
-                <button key={tab} onClick={() => setActiveTab(tab)} style={{ background: 'none', border: 'none', borderBottom: activeTab === tab ? '2px solid #81c784' : '2px solid transparent', padding: '0.75rem 1rem', cursor: 'pointer', fontSize: '0.875rem', fontWeight: activeTab === tab ? '600' : '400', color: activeTab === tab ? '#81c784' : '#2d3436', textTransform: 'capitalize' }}>
-                  {tab}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', borderBottom: '1px solid #e0e0e0', overflowX: 'auto' }}>
+              {['protein', 'carbs', 'fats', 'vegetables', 'extras', 'meals'].map(tab => (
+                <button key={tab} onClick={() => setActiveTab(tab)} style={{ background: 'none', border: 'none', borderBottom: activeTab === tab ? '2px solid #81c784' : '2px solid transparent', padding: '0.75rem 1rem', cursor: 'pointer', fontSize: '0.875rem', fontWeight: activeTab === tab ? '600' : '400', color: activeTab === tab ? '#81c784' : '#2d3436', textTransform: 'capitalize', whiteSpace: 'nowrap' }}>
+                  {tab === 'meals' ? '🍽️ Pre-Made Meals' : tab}
                 </button>
               ))}
             </div>
 
             <div className="card">
-              <div style={{ display: 'grid', gap: '0.5rem', maxHeight: '500px', overflowY: 'auto' }}>
+              {activeTab === 'meals' ? (
+                <div>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>🍽️ Complete Meal Plans</h3>
+                  <p style={{ fontSize: '0.75rem', color: '#666', marginBottom: '1rem' }}>Click any meal to load all ingredients instantly</p>
+                  
+                  <div style={{ display: 'grid', gap: '1rem' }}>
+                    {preMadeMeals
+                      .filter((meal: any) => {
+                        const userHealth = answers.health || ['none'];
+                        
+                        // Only filter by health conditions (not goal)
+                        const hasHealthConditions = userHealth.some((h: string) => h !== 'none');
+                        if (!hasHealthConditions) return true; // Show all meals if no health conditions
+                        
+                        // If user has health conditions, only show meals that match OR meals marked as 'none'
+                        return meal.health.some((h: string) => userHealth.includes(h)) || meal.health.includes('none');
+                      })
+                      .map((meal: any) => (
+                        <div 
+                          key={meal.id}
+                          style={{ 
+                            padding: '1rem',
+                            background: '#f5f5f5',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            border: '2px solid transparent'
+                          }}
+                          onMouseEnter={e => {
+                            e.currentTarget.style.background = '#e8f5e9';
+                            e.currentTarget.style.borderColor = '#81c784';
+                          }}
+                          onMouseLeave={e => {
+                            e.currentTarget.style.background = '#f5f5f5';
+                            e.currentTarget.style.borderColor = 'transparent';
+                          }}
+                          onClick={() => loadPreMadeMeal(meal)}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                            <div style={{ flex: 1 }}>
+                              <div style={{ fontSize: '0.9375rem', fontWeight: '600', marginBottom: '0.25rem' }}>{meal.name}</div>
+                              <div style={{ fontSize: '0.75rem', color: '#666' }}>⏱️ {meal.prepTime}</div>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', marginBottom: '0.75rem', padding: '0.75rem', background: 'white', borderRadius: '6px' }}>
+                            <div style={{ textAlign: 'center' }}>
+                              <div style={{ fontSize: '0.7rem', color: '#666' }}>PROTEIN</div>
+                              <div style={{ fontSize: '0.875rem', fontWeight: 'bold' }}>{meal.macros.protein}g</div>
+                            </div>
+                            <div style={{ textAlign: 'center' }}>
+                              <div style={{ fontSize: '0.7rem', color: '#666' }}>CARBS</div>
+                              <div style={{ fontSize: '0.875rem', fontWeight: 'bold' }}>{meal.macros.carbs}g</div>
+                            </div>
+                            <div style={{ textAlign: 'center' }}>
+                              <div style={{ fontSize: '0.7rem', color: '#666' }}>FAT</div>
+                              <div style={{ fontSize: '0.875rem', fontWeight: 'bold' }}>{meal.macros.fat}g</div>
+                            </div>
+                            <div style={{ textAlign: 'center' }}>
+                              <div style={{ fontSize: '0.7rem', color: '#666' }}>CALS</div>
+                              <div style={{ fontSize: '0.875rem', fontWeight: 'bold' }}>{meal.macros.cals}</div>
+                            </div>
+                          </div>
+
+                          <div style={{ marginBottom: '0.75rem' }}>
+                            <div style={{ fontSize: '0.8125rem', fontWeight: '600', marginBottom: '0.5rem', color: '#81c784' }}>✓ Benefits:</div>
+                            <div style={{ fontSize: '0.75rem', color: '#666', lineHeight: '1.6' }}>
+                              {meal.benefits.map((benefit: string, i: number) => (
+                                <div key={i}>• {benefit}</div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+                            {meal.tags.map((tag: string, i: number) => (
+                              <span key={i} style={{ fontSize: '0.7rem', background: '#81c784', color: 'white', padding: '0.25rem 0.5rem', borderRadius: '4px' }}>
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          <details style={{ fontSize: '0.75rem', color: '#666' }}>
+                            <summary style={{ cursor: 'pointer', fontWeight: '600', marginBottom: '0.5rem' }}>📝 Instructions</summary>
+                            <div style={{ whiteSpace: 'pre-line', lineHeight: '1.6', paddingLeft: '1rem' }}>
+                              {meal.instructions}
+                            </div>
+                          </details>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.75rem' }}>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                viewRecipe(meal);
+                              }}
+                              style={{ padding: '0.5rem', background: 'white', color: '#81c784', border: '2px solid #81c784', textAlign: 'center', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: '600', cursor: 'pointer' }}
+                            >
+                              View Recipe
+                            </button>
+                            <button 
+                              onClick={() => loadPreMadeMeal(meal)}
+                              style={{ padding: '0.5rem', background: '#81c784', color: 'white', border: 'none', textAlign: 'center', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: '600', cursor: 'pointer' }}
+                            >
+                              Load Meal →
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : (
+                <div style={{ display: 'grid', gap: '0.5rem', maxHeight: '500px', overflowY: 'auto' }}>
                 {getFilteredFoods(activeTab).map(food => (
                   <div key={food.id} onClick={() => addFood(food)} style={{ padding: '0.75rem', background: '#f5f5f5', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8125rem', transition: 'all 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = '#e8f5e9'} onMouseLeave={e => e.currentTarget.style.background = '#f5f5f5'}>
                     <div style={{ fontWeight: '500', marginBottom: '0.25rem' }}>{food.serving}{food.unit} {food.name}</div>
@@ -619,14 +779,15 @@ const MacroPlans = () => {
                     {food.notes && <div style={{ fontSize: '0.75rem', color: '#81c784', marginTop: '0.25rem' }}>{food.notes}</div>}
                   </div>
                 ))}
-              </div>
+                </div>
+              )}
             </div>
           </div>
 
           <div>
             <div className="card" style={{ marginBottom: '1rem', background: '#e8f5e9' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <h3 style={{ fontSize: '0.9375rem', margin: 0 }}>💡 About Tracking</h3>
+                <h3 style={{ fontSize: '0.9375rem', margin: 0 }}> About Tracking</h3>
                 <button onClick={() => setShowTrackingInfo(!showTrackingInfo)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', color: '#81c784' }}>
                   {showTrackingInfo ? 'Hide' : 'Show'}
                 </button>
@@ -674,6 +835,82 @@ const MacroPlans = () => {
             )}
           </div>
         </div>
+
+        {showRecipeModal && selectedRecipe && (
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' }} onClick={() => setShowRecipeModal(false)}>
+            <div style={{ background: 'white', borderRadius: '12px', maxWidth: '700px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '2rem', position: 'relative' }} onClick={(e) => e.stopPropagation()}>
+              <button onClick={() => setShowRecipeModal(false)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', fontSize: '2rem', cursor: 'pointer', color: '#666', lineHeight: 1 }}>×</button>
+              
+              <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', paddingRight: '2rem' }}>{selectedRecipe.name}</h2>
+              
+              {selectedRecipe.recipe && (
+                <>
+                  <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '1.5rem', fontSize: '0.875rem', color: '#666', flexWrap: 'wrap' }}>
+                    <div><strong>Servings:</strong> {selectedRecipe.recipe.servings}</div>
+                    <div><strong>Prep:</strong> {selectedRecipe.recipe.prepTime}</div>
+                    <div><strong>Cook:</strong> {selectedRecipe.recipe.cookTime}</div>
+                    <div><strong>Difficulty:</strong> {selectedRecipe.recipe.difficulty}</div>
+                  </div>
+
+                  <div style={{ background: '#f5f5f5', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                    <div style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem' }}>Nutrition (per serving)</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.75rem', fontSize: '0.8125rem' }}>
+                      <div><strong>Protein:</strong> {selectedRecipe.macros.protein}g</div>
+                      <div><strong>Carbs:</strong> {selectedRecipe.macros.carbs}g</div>
+                      <div><strong>Fat:</strong> {selectedRecipe.macros.fat}g</div>
+                      <div><strong>Fiber:</strong> {selectedRecipe.macros.fiber}g</div>
+                      <div><strong>Sugar:</strong> {selectedRecipe.macros.sugar}g</div>
+                      <div><strong>Calories:</strong> {selectedRecipe.macros.cals}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Ingredients</h3>
+                    <ul style={{ paddingLeft: '1.25rem', lineHeight: '1.8', fontSize: '0.875rem' }}>
+                      {selectedRecipe.ingredients.map((ing: any, i: number) => {
+                        const food = Object.values(foodDatabase).flat().find((f: any) => f.id === ing.id);
+                        return food ? (
+                          <li key={i}>{ing.amount}{food.unit} {food.name} ({food.brand})</li>
+                        ) : null;
+                      })}
+                    </ul>
+                  </div>
+
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <h3 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Instructions</h3>
+                    <ol style={{ paddingLeft: '1.25rem', lineHeight: '1.8', fontSize: '0.875rem' }}>
+                      {selectedRecipe.recipe.steps.map((step: string, i: number) => (
+                        <li key={i} style={{ marginBottom: '0.5rem' }}>{step}</li>
+                      ))}
+                    </ol>
+                  </div>
+
+                  {selectedRecipe.recipe.tips && selectedRecipe.recipe.tips.length > 0 && (
+                    <div style={{ background: '#e8f5e9', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                      <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>💡 Pro Tips</h3>
+                      <ul style={{ paddingLeft: '1.25rem', lineHeight: '1.8', fontSize: '0.8125rem', marginBottom: 0 }}>
+                        {selectedRecipe.recipe.tips.map((tip: string, i: number) => (
+                          <li key={i}>{tip}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <button 
+                    onClick={() => {
+                      loadPreMadeMeal(selectedRecipe);
+                      setShowRecipeModal(false);
+                    }}
+                    className="btn-primary" 
+                    style={{ width: '100%', padding: '0.875rem', fontSize: '0.9375rem' }}
+                  >
+                    Load This Meal Into Builder
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
