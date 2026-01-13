@@ -114,3 +114,5 @@ Contributions welcome. Verify nutritional data from official sources and test on
 **Stack:** React, TypeScript, Tailwind CSS, Vite  
 **Focus:** Education over tracking, cycle-aware wellness, personalized nutrition  
 **Built for:** Women who want complete wellness support, not just another macro tracker!
+**Last Updated:** January 2026
+
