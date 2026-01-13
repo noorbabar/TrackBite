@@ -1,6 +1,7 @@
 # TrackBite
 
 **A Wellness Companion for Women**
+
 [Live Demo](https://track-bite.vercel.app)
 
 I'm passionate about fitness and nutrition, and as a woman constantly researching this field, I built TrackBite to help others navigate what I know is confusing: because creating tools that actually make an impact matters to me.
