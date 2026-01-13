@@ -1,112 +1,115 @@
-# 🥗 TrackBite - A Wellness Companion
+# TrackBite
 
-TrackBite is a web application that aims to help users build sustainable nutrition habits through education, personalisation, and meal planning!
+**A Wellness Companion for Women**
+[Live Demo](https://track-bite.vercel.app)
 
-We believe:
-- **Education > Tracking**: Understanding nutrition beats obsessive logging
-- **Flexibility > Perfection**: Rough targets are more sustainable than strict numbers
-- **Personalisation > Generic**: Your goals and body composition matter
-- **Real Food > Abstract Numbers**: Focus on ingredients, not just calories
+I'm passionate about fitness and nutrition, and as a woman constantly researching this field, I built TrackBite to help others navigate what I know is confusing: because creating tools that actually make an impact matters to me.
 
 ---
 
-## Features
+## The Problem
 
-### **Smart Meal Planning**
-- **70+ Verified Ingredients** from Australian grocery stores (Coles, Woolworths, ALDI, Costco)
-- **Live Macro Calculator** with real-time tracking as you build meals
-- **Recipe Auto-Matching** suggests meals based on selected ingredients
-- **Pre-Made Meal Plans** with health benefits and cooking instructions
-- **Dietary Filters**: Halal, Vegetarian, Vegan, Gluten-Free, Dairy-Free
-- **Store-Specific Filtering** shows only items from your preferred stores
-- **Meal Saving** with localStorage for reusable meal templates
+Hitting your macros is hard. Understanding how your cycle affects training is harder. Finding workout splits that actually work for your goals? Even harder.
 
-### **Goal-Based Nutrition**
-- **Personalised Macros** based on your specific goals:
-  - **Muscle Gain**: 2g protein per kg body weight, higher carbs for energy
-  - **Fat Loss**: 2g protein per kg, minimum fat for hormones (0.8g/kg)
-  - **Performance**: Higher carbs (55%) for athletic performance
-  - **Maintenance**: Balanced split for weight maintenance
-  
-### **Intelligent Calculations**
-- **Mifflin-St Jeor BMR** equation for accurate calorie needs
-- **Activity Level Adjustments** (Sedentary to Very Active)
-- **Goal-Aware Macro Distribution** that prioritizes protein
-- **Health-Based Recommendations** (Diabetes low-sugar, High BP low-sodium)
+Most fitness apps treat nutrition and training as separate problems. They ignore how hormones affect energy, recovery, and performance. Generic meal plans don't account for your grocery stores or dietary needs.
 
-### **Cycle-Aware Training** (Optional)
-- Phase-specific training recommendations
-- Nutrition adjustments per menstrual phase
-- Energy level expectations
+TrackBite brings it all together: nutrition education, personalised macros, cycle aware training, and soon, complete workout programming designed for women. Plan your meals here, track them in MyFitnessPal.
 
-### **Education Hub**
-- Comprehensive guides on macros, protein targets, progress tracking
+---
 
-## Meal Planning Features
+## What It Does
 
-- **Ingredient Database**
-- **Pre-Made Meals**
+**Smart Macro Calculator** → Personalised macros using Mifflin-St Jeor BMR based on goals, body composition, activity level
 
-## Contributing
+**Real Time Meal Builder** → 70+ verified ingredients from Australian groceries with live macro tracking as you build
 
-We welcome contributions! Please:
+**Recipe Auto Matching** → Suggests complete meals based on ingredients you select
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+**Pre Made Meal Plans** → Ready to use meals with health benefits, cooking instructions, macro breakdowns
 
-**Contribution Guidelines:**
-- Follow existing code style (TypeScript, functional components)
-- Verify nutritional data from official sources
-- Test on mobile devices
-- Update README if adding features
+**Dietary Filters** → Halal, Vegetarian, Vegan, Gluten Free, Dairy Free, store specific filtering
 
-## Known Issues
-- [ ] Recipe auto-matching could be more intelligent (ML?)
+**Cycle Aware Training** → Phase specific training and nutrition recommendations synced to your menstrual cycle
 
-## Roadmap
+**Education Hub** → Guides on protein targets, macro basics, progress tracking for complete beginners
 
-### **Phase 1** (Current)
-- Smart meal planning with 70+ ingredients
-- Goal-based macro calculation
-- Pre-made meal plans
-- Cycle tracking
-- Educational content
+**Coming Soon:**
 
-### **Phase 2** (Planned)
-- [ ] Grocery list generator
-- [ ] Weekly meal prep planner
-- [ ] Recipe community sharing
+- Women focused workout splits (strength, hypertrophy, performance)
+- Expanded grocery store coverage (more Australian stores + international options)
+- Progressive overload tracking
+- Training adjustments based on cycle phase and energy levels
 
-### **Phase 3** (Future)
-- [ ] AI-powered meal recommendations
-- [ ] Integration with fitness trackers
-- [ ] Macro-friendly restaurant finder
-- [ ] Meal delivery service partnerships
+---
 
-## Acknowledgments
+## How It Works
 
-- **Nutritional Data**: Verified from Coles, Woolworths, ALDI product packaging
-- **Australian Brands**: SunRice, Vetta, Red Tractor, Simson's, Aminoz, Al Amin, and more
-- **Design Inspiration**: Modern wellness apps with focus on simplicity
-- **Community**: Thanks to all users providing feedback
+**Goal Based Nutrition**  
+Different goals need different approaches:
 
-Have questions or feedback?
-- 📧 Email: nbabar233@gmail.com (placeholder)
+- Muscle Gain → 1.8-2.2g protein/kg bodyweight, higher carbs for energy
+- Fat Loss → 1.2-2g protein/kg, minimum fat for hormones (0.8g/kg), calorie deficit
+- Performance → 55% carbs for athletic performance, balanced protein/fat
+- Maintenance → Balanced split for weight stability
 
-## Stats
-- **70+ Ingredients** with verified nutritional data
-- **10 Auto-Match Recipes** based on ingredients
-- **8 Pre-Made Meals** with health benefits
-- **4 Dietary Filters** (Halal, Vegan, Vegetarian, Gluten-Free)
-- **4 Goal Types** (Muscle, Fat Loss, Performance, Maintenance)
-- **100% Mobile Responsive** across all devices
+**Cycle Aware Wellness**  
+Your hormones affect everything. TrackBite adjusts training intensity, volume, and nutrition recommendations based on your cycle phase. Higher intensity during follicular phase when energy peaks, modified training during luteal phase when recovery needs increase.
 
-**Built with ❤️ for sustainable wellness**
+**Real Ingredients, Real Stores**  
+All nutritional data verified from actual Australian product packaging. Store specific filtering shows only items from your preferred groceries. Expanding to more stores and international options.
 
-*TrackBite: Because nutrition should empower, not overwhelm.*
+---
+
+## Tech Stack
+
+**Frontend:** React, TypeScript, Tailwind CSS  
+**Storage:** localStorage for meal templates and preferences  
+**Deployment:** Vercel  
+
+Built mobile first because most people plan meals on their phones.
+
+---
+
+## Why I Built This
+
+Trying to hit macros as a beginner is frustrating. Generic calculators don't account for actual goals or how your body responds. Cycle tracking exists, but nothing integrates nutrition and training adjustments together.
+
+Women need tools that understand how hormones affect performance, not generic fitness apps designed for men. I wanted something that educates first, tracks second, and actually considers how real people live, train, and feel throughout the month.
+
+---
+
+## Current Status
+
+**Working:** 70+ verified ingredients, goal based macro calculation, real time meal building, pre made meal plans, recipe auto matching, dietary/store filtering, cycle aware training
+
+**In Progress:** Improving recipe auto matching intelligence, adding more meals and ingredients, refining UI/UX for faster meal building
+
+---
+
+## What's Next
+
+**Short-term:** Women focused workout splits, expanded grocery stores, progressive overload tracking
+
+**Medium-term:** Recipe community sharing, restaurant macro finder, training program library
+
+**Long-term:** AI powered meal and workout recommendations, cycle synced periodisation
+
+---
 
 ## Contributing
-If you'd like to help out, feel free to fork the repo and submit a pull request. Please ensure your changes align with the code style of the project!
+
+Contributions welcome. Verify nutritional data from official sources and test on mobile.
+
+1. Fork the repo
+2. Create feature branch (`git checkout -b feature/NewFeature`)
+3. Commit changes (`git commit -m 'Add NewFeature'`)
+4. Push to branch (`git push origin feature/NewFeature`)
+5. Open Pull Request
+
+**Guidelines:** TypeScript, functional components, verify nutritional data, test mobile, update README
+
+---
+
+**Stack:** React, TypeScript, Tailwind CSS, Vite  
+**Focus:** Education over tracking, cycle-aware wellness, personalized nutrition  
+**Built for:** Women who want complete wellness support, not just another macro tracker!
