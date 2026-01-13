@@ -14,7 +14,7 @@ Hitting your macros is hard. Understanding how your cycle affects training is ha
 
 Most fitness apps treat nutrition and training as separate problems. They ignore how hormones affect energy, recovery, and performance. Generic meal plans don't account for your grocery stores or dietary needs.
 
-TrackBite brings it all together: nutrition education, personalised macros, cycle aware training, and soon, complete workout programming designed for women. Plan your meals here, track them in MyFitnessPal.
+TrackBite brings it all together: nutrition education, personalised macros, cycle aware training, and soon, complete workout programming designed for women. Plan your meals here, & track them in MyFitnessPal.
 
 ---
 
